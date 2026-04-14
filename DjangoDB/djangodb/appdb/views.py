@@ -1,7 +1,7 @@
 from django.shortcuts import render
-from .models import members
+from .models import Members
 
 
 def home(request):
-    all_members = members.objects.all
+    all_members = Members.objects.all()
     return render(request, 'home.html', {'all': all_members})
