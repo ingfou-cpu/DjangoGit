@@ -1,7 +1,7 @@
 from django.db import models
 
 # Create your models here.
-class Members (models.Model):
+class Member (models.Model):
     name = models.CharField(max_length=50)
     lname = models.CharField(max_length=50)
     age = models.IntegerField()
