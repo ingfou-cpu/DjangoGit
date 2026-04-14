@@ -1,3 +1,5 @@
+{% extends 'base.html' %}
+
 <h1>Welcome to table of MEMBER DATABASE</h1>
 <table border="1">
     <tr>
@@ -18,20 +20,24 @@
         <td>{{i.phone}}</td>
         <td>{{i.address}}</td>
     </tr>
-
-    {% endfor %}
+    {% endfor %}   
+ 
 </table>
 <h1>MEMBER DATABASE details</h1>
 {% for i in all %}
         <td>{{i.age}}</td>
     {{i.name}} {{i.lname}} is {{i.age}} years old. His email is {{i.email}}. His phone number is {{i.phone}}. He lives in {{i.address}}.<br/>
 {% endfor %}
+{% block content %}
 <h1>MEMBER DATABASE details</h1>
-{% for i in all %}
-  {{i.name}} {{i.lname}} <br/>
-    Age: {{i.age}} <br/>
-    Email: {{i.email}} <br/>
-    Phone: {{i.phone}} <br/>    
-    Address: {{i.address}} <br/>
-    <hr/>
-{% endfor %}
+
+    {% for i in all %}
+    {{i.name}} {{i.lname}} <br/>
+        Age: {{i.age}} <br/>
+        Email: {{i.email}} <br/>
+        Phone: {{i.phone}} <br/>    
+        Address: {{i.address}} <br/>
+        <hr/>
+    {% endfor %}
+{% endblock %}       
+       
