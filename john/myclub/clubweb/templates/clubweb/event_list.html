@@ -1,0 +1,28 @@
+{% extends 'clubweb/base.html' %}
+
+{% block content %}
+
+    <h1>Events</h1>
+</br>
+    {% for event in event_list %}
+        <strong>{{ event }}</strong>
+           
+        <ul>
+        </br> 
+        <li>date : {{ event.event_date }}</li>
+        <li>venue : {{ event.venue }}</li>
+        <li>manager : {{ event.manager}}</li>
+        <li>description : {{ event.description }}</li>
+        <!--{% for user in event.attendees.all %}
+        <li>  attendees:  {{ user }}
+            {% endfor %}</li>-->
+        <!--<li>attendees : {{ event.attendees.all|length }}</li>  -->
+        <!-- attendees est une relation many to many, on doit faire .all pour récupérer tous les 
+            de la relation, et length pour compter le nombre d'éléments de la relation -->      
+        <li>attendees : {{ event.attendees.all|join:", " |linebreaks }}</li>
+        <!-- attendees est une relation many to many, on doit faire .all pour récupérer tous les 
+         de la relation, et join pour les afficher séparés par une virgule -->
+        </ul>
+    {% endfor %}
+    
+{% endblock %}

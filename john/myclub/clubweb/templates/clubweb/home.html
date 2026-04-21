@@ -1,0 +1,13 @@
+{% extends 'clubweb/base.html' %}
+
+{% block content %}
+
+    <center>
+    <h1>Welcome {{fname }} event for {{ month }} / {{ years }}</h1>
+    {{ time|safe }} <br/>{{ now|date:"DATE_FORMAT" }}<br/>
+
+    {{ cal|safe }}
+    {{ event_list|safe }}
+    </center>
+
+{% endblock %}

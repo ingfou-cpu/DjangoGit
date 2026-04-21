@@ -1,0 +1,30 @@
+{% extends 'store/base.html' %}
+
+{% block content %}
+  <h1>Produits</h1>
+  <div class="row">
+    {% for product in products %}
+      <div class="col-md-4 mb-3">
+        <div class="card h-100 shadow-sm">
+          {% if product.image %}
+            <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}" style="height: 200px; object-fit: cover;">
+          {% else %}
+            <div class="bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+              <span class="text-muted">Aucune image</span>
+            </div>
+          {% endif %}
+          <div class="card-body">
+            <h5 class="card-title">{{ product.name }}</h5>
+            <p class="card-text">{{ product.description|truncatechars:100 }}</p>
+            <p class="card-text"><strong>{{ product.price|floatformat:2 }} €</strong></p>
+            <a href="{% url 'store:product_detail' product.slug %}" class="btn btn-primary w-100">Voir le produit</a>
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <div class="col-12 text-center py-5">
+        <p class="alert alert-warning">Aucun produit n'est disponible pour le moment.</p>
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}
