@@ -1,0 +1,14 @@
+{% extends 'clubweb/base.html' %}
+
+{% block content %}
+
+    <h1>update Event</h1>
+    <form  action="{% url 'clubweb:update_event' event.id %}" method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <br>
+        <button type="submit" class="btn btn-primary" value="update">Update Event</button>
+    </form>
+
+
+{% endblock %}

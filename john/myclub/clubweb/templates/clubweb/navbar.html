@@ -8,18 +8,37 @@
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'clubweb:home' '2023' 'april' %}">april</a>
+          <a class="nav-link" href="{% url 'clubweb:home' '2023' 'april' %}">April</a>
         </li>  
         <li class="nav-item">
           <a class="nav-link" href="{% url 'clubweb:event_list' %}">Events</a>
         </li> 
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'members:login_user' %}">login</a>
-        </li>             
+          <a class="nav-link" href="{% url 'clubweb:add_venue' %}">Add Venue</a>
+        </li>   
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'clubweb:add_event' %}">Add Events</a>
+        </li>           
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'clubweb:venues' %}">Venues</a>
+        </li>   
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'clubweb:venues_text_file' %}">Download Venues List</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'clubweb:venues_csv_file' %}">Download Venues List (CSV)</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'clubweb:venues_pdf_file' %}">Download Venues List (PDF)</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'authenticate:login_user' %}">login</a>
+        </li>                   
       </ul>
-      <form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-        <button class="btn btn-outline-success" type="submit">Search</button>
+      <form class="d-flex" method="POST" action="{% url 'clubweb:search_venues' %}">
+        {% csrf_token %}
+        <input class="form-control me-2" type="search" name="search" placeholder="Chercher un lieu" aria-label="Search"/>
+        <button class="btn btn-outline-secondary" type="submit">Search</button>
       </form>
     </div>
   </div>

@@ -13,7 +13,7 @@ def login_user(request):
             login(request, user)
             return redirect('clubweb:home')
         else:
-            messages.success(request, ("There was an error logging in. Please try again..."))
-            return redirect('members:login_user')
+            messages.error(request, ("Invalid username or password. Please try again."))
+            return redirect('authenticate:login_user')
     else:
-        return render(request, 'authenticate/login.html', {})   
+        return render(request, 'authenticate/login.html', {})

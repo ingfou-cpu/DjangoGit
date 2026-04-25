@@ -1,0 +1,44 @@
+{% extends 'clubweb/base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-8">
+    <div class="card shadow-sm mb-4">
+      <div class="card-header bg-secondary text-white">
+        <h2 class="card-title mb-0">Résultat de la recherche</h2>
+      </div>
+      <div class="card-body">
+        {% if query %}
+          <p class="lead mb-3">Vous avez recherché :</p>
+          <div class="alert alert-primary" role="alert">
+            <strong>{{ query }}</strong>
+          </div>
+
+          {% if results %}
+            <div class="list-group">
+              {% for venue in results %}
+                <div class="list-group-item mb-3 p-3 rounded shadow-sm">
+                  <h5 class="mb-1">{{ venue.name }}</h5>
+                  <p class="mb-1">{{ venue.address }}{% if venue.zip_code %}, {{ venue.zip_code }}{% endif %}</p>
+                  {% if venue.phone %}<p class="mb-1">Téléphone : {{ venue.phone }}</p>{% endif %}
+                  {% if venue.email_address %}<p class="mb-1">Email : {{ venue.email_address }}</p>{% endif %}
+                  {% if venue.web %}<p class="mb-0">Site : <a href="{{ venue.web }}" target="_blank" rel="noopener">{{ venue.web }}</a></p>{% endif %}
+                </div>
+              {% endfor %}
+            </div>
+          {% else %}
+            <div class="alert alert-warning" role="alert">
+              Aucun lieu trouvé pour <strong>"{{ query }}"</strong>.
+            </div>
+            <a href="{% url 'clubweb:home' %}" class="btn btn-outline-primary">Retour à l’accueil</a>
+          {% endif %}
+        {% else %}
+          <p class="mb-3">Entrez un terme dans la barre de recherche pour trouver un lieu.</p>
+          <a href="{% url 'clubweb:home' %}" class="btn btn-outline-primary">Retour à l’accueil</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %} 

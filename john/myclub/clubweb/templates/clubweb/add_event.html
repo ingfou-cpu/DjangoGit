@@ -1,0 +1,19 @@
+{% extends 'clubweb/base.html' %}
+
+{% block content %}
+	<h1>Ajouter un Evenement</h1>
+    <br></br>
+    {% if submitted %}
+        <div class="alert alert-success" role="alert">
+            Evenement ajouté avec succès!
+        </div>
+        {% else %}
+            <form method="POST" class="mb-4">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary">Ajouter l'Evenement</button>
+            </form>
+        {% endif %}
+
+
+{% endblock %}
