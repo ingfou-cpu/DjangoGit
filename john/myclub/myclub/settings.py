@@ -25,7 +25,10 @@ SECRET_KEY = 'django-insecure-w4mld3j%l$!m6z%repwcu9w2kfs77jd!j)_0boo325cy_pgay%
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+
+# CSRF settings for development
+CSRF_TRUSTED_ORIGINS = ['http://localhost:8000', 'http://127.0.0.1:8000']
 
 
 # Application definition
@@ -37,8 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'authen',
     'clubweb',
-    'members',
 ]
 
 MIDDLEWARE = [
@@ -61,6 +64,7 @@ TEMPLATES = [
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.request',
+                'django.template.context_processors.csrf',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
@@ -117,3 +121,23 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+
+# Email Configuration
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # For development
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'  # For production
+
+# Gmail SMTP (optional for production)
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+# EMAIL_HOST_USER = 'your_email@gmail.com'
+# EMAIL_HOST_PASSWORD = 'your_app_password'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'# Use SMTP backend for sending real emails
+EMAIL_HOST = 'smtp.gmail.com'  # Gmail SMTP server
+EMAIL_PORT = 587                      # Port for TLS
+EMAIL_USE_TLS = True                  # Enable TLS encryption
+EMAIL_HOST_USER = 'ingfou42@gmail.com'  # Your Gmail email address
+EMAIL_HOST_PASSWORD = 'rzmexoxfbglnetti'  # Use an App Password, not your login password
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER # Set the default from email to your Gmail address
+#DEFAULT_FROM_EMAIL = 'noreply@myclub.com'
+

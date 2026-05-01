@@ -1,0 +1,25 @@
+{% extends 'authen/base.html' %}
+
+{% block title %}Home - MyClub{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-body text-center">
+                <h1 class="card-title mb-4">Welcome to MyClub!</h1>
+                {% if user.is_authenticated %}
+                    <p class="card-text lead">Hello {{ user.first_name|default:user.username }}, welcome back!</p>
+                    <p class="card-text">Your email has been verified and your account is active.</p>
+                {% else %}
+                    <p class="card-text lead">Join our community today and start managing club events!</p>
+                    <div class="mt-4">
+                        <a href="{% url 'authen:register' %}" class="btn btn-primary btn-lg me-2">Register Now</a>
+                        <a href="{% url 'authen:login' %}" class="btn btn-outline-primary btn-lg">Login</a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

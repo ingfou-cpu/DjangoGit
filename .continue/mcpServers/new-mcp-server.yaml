@@ -1,0 +1,11 @@
+name: Ollama MCP Server
+version: 0.0.1
+mcpServers:
+  - name: Ollama
+    type: stdio
+    command: npx
+    args:
+      - -y
+      - ollama-mcp-server
+    env:
+      OLLAMA_HOST: http://127.0.0.1:11434   

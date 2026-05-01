@@ -10,10 +10,9 @@ urlpatterns = [
     # path: whole urls /
     # slug: hyphen-and_underscores_stuff
     # UUID: universally unique identifier
+    #path('', views.home, name='home'),
     path('', views.home, name='home'),
     path('<int:years>/<str:month>/', views.home, name='home'),
-    path('members/', include('django.contrib.auth.urls')),
-    path('members/', include('members.urls')),
     path('events/', views.all_events, name='event_list'),
     path('add_venue/', views.add_venue, name='add_venue'),
     path('search_venues/', views.search_venues, name='search_venues'),

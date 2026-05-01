@@ -1,6 +1,7 @@
 {% extends 'clubweb/base.html' %}
 
 {% block content %}
+{% if user.is_authenticated %}
 <div class="container mt-4">
 	<h1>Ajouter un lieu</h1>
 
@@ -39,4 +40,11 @@
 	</form>
 </div>
 
+{% else %}
+    <div class="alert alert-warning" role="alert">
+        Vous devez être connecté pour ajouter un lieu.
+        <a class="nav-link" href="{% url 'authen:login' %}">Login Here</a>
+
+    </div>
+{% endif %}
 {% endblock %}

@@ -1,7 +1,7 @@
 {% extends 'clubweb/base.html' %}
 
 {% block content %}
-
+{% if user.is_authenticated %}
     <h1>update Venue</h1>
     <form  action="{% url 'clubweb:update_venue' venue.id %}" method="POST">
         {% csrf_token %}
@@ -11,4 +11,11 @@
     </form>
 
 
+{% else %}
+    <div class="alert alert-warning" role="alert">
+        Vous devez être connecté pour modifier un lieu.
+        <a class="nav-link" href="{% url 'authen:login' %}">Login Here</a>
+
+    </div>
+{% endif %}
 {% endblock %}

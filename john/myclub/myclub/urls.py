@@ -19,6 +19,10 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('clubweb.urls')),
-    path('authenticate/', include('members.urls', namespace='authenticate')),
+    path('cal/', include('clubweb.urls')),
+    path('', include('authen.urls')),
 ]
+
+"""    path('admin/', admin.site.urls),
+    path('', include('clubweb.urls')),
+    path('auth/', include('authen.urls')),"""
