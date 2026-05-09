@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=2.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Réservation - {{ destination.name }}</title>
     <link rel="icon" type="image/x-icon" href="static/assets/favicon.ico" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
@@ -175,7 +175,7 @@
                 <p style="color: #666; margin-bottom: 15px;">Sélectionnez un hôtel pour {{ destination.name }} :</p>
                 <div class="hotel-cards">
                     {% for hotel in hotels %}
-                    <div class="hotel-card" onclick="selectHotel({{ hotel.id }})" id="hotel-card-{{ hotel.id }}" data-price="{{ hotel.price }}" data-name="{{ hotel.hotel_name }}">
+                    <div class="hotel-card" onclick="selectHotel('{{ hotel.id }}')" id="hotel-card-{{ hotel.id }}" data-price="{{ hotel.price }}" data-name="{{ hotel.hotel_name|escape }}">
                         <div class="stars">
                             {% for i in "x"|rjust:hotel.calification_stars %}⭐{% endfor %}
                         </div>
@@ -273,12 +273,13 @@
         let selectedHotelName = '';
 
         function selectHotel(hotelId) {
+            var id = parseInt(hotelId, 10);
             document.querySelectorAll('.hotel-card').forEach(function(card) {
                 card.classList.remove('selected');
             });
-            var card = document.getElementById('hotel-card-' + hotelId);
+            var card = document.getElementById('hotel-card-' + id);
             card.classList.add('selected');
-            document.getElementById('hotel_id').value = hotelId;
+            document.getElementById('hotel_id').value = id;
             selectedHotelPrice = parseFloat(card.getAttribute('data-price'));
             selectedHotelName = card.getAttribute('data-name');
         }
