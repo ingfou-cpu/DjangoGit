@@ -1,43 +1,360 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1> Join Us </h1>
-    <br/><br/>
+<style>
+    /* ===== FUTURISTIC JOIN PAGE ===== */
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap');
+
+    :root {
+        --neon-cyan: #00f5ff;
+        --neon-pink: #ff00ff;
+        --neon-purple: #b026ff;
+        --dark-bg: #0a0a1a;
+        --card-bg: rgba(15, 15, 35, 0.8);
+        --input-bg: rgba(20, 20, 50, 0.6);
+        --border-glow: rgba(0, 245, 255, 0.3);
+    }
+
+    body {
+        background: var(--dark-bg);
+        background-image: 
+            radial-gradient(ellipse at 20% 50%, rgba(176, 38, 255, 0.15) 0%, transparent 50%),
+            radial-gradient(ellipse at 80% 50%, rgba(0, 245, 255, 0.1) 0%, transparent 50%),
+            linear-gradient(180deg, #0a0a1a 0%, #1a1a3a 100%);
+        min-height: 100vh;
+    }
+
+    .join-container {
+        max-width: 600px;
+        margin: 40px auto;
+        padding: 40px;
+        background: var(--card-bg);
+        border-radius: 20px;
+        border: 1px solid var(--border-glow);
+        box-shadow: 
+            0 0 30px rgba(0, 245, 255, 0.1),
+            inset 0 0 60px rgba(0, 245, 255, 0.05);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .join-container::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: conic-gradient(
+            from 0deg,
+            transparent 0%,
+            rgba(0, 245, 255, 0.1) 25%,
+            transparent 50%,
+            rgba(255, 0, 255, 0.1) 75%,
+            transparent 100%
+        );
+        animation: rotate 10s linear infinite;
+        z-index: -1;
+    }
+
+    @keyframes rotate {
+        100% { transform: rotate(360deg); }
+    }
+
+    .join-title {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 2.5rem;
+        font-weight: 900;
+        text-align: center;
+        margin-bottom: 10px;
+        background: linear-gradient(90deg, var(--neon-cyan), var(--neon-pink), var(--neon-purple));
+        background-size: 200% auto;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        animation: gradient-shift 3s ease infinite;
+        text-shadow: 0 0 30px rgba(0, 245, 255, 0.5);
+    }
+
+    @keyframes gradient-shift {
+        0%, 100% { background-position: 0% center; }
+        50% { background-position: 100% center; }
+    }
+
+    .join-subtitle {
+        font-family: 'Rajdhani', sans-serif;
+        text-align: center;
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 1.1rem;
+        margin-bottom: 30px;
+        letter-spacing: 2px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+        position: relative;
+    }
+
+    .form-group label {
+        font-family: 'Rajdhani', sans-serif;
+        font-weight: 600;
+        color: var(--neon-cyan);
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin-bottom: 8px;
+        display: block;
+    }
+
+    .futuristic-input {
+        width: 100%;
+        padding: 15px 20px;
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 1rem;
+        color: #fff;
+        background: var(--input-bg);
+        border: 1px solid rgba(0, 245, 255, 0.2);
+        border-radius: 10px;
+        outline: none;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(10px);
+    }
+
+    .futuristic-input::placeholder {
+        color: rgba(255, 255, 255, 0.3);
+    }
+
+    .futuristic-input:focus {
+        border-color: var(--neon-cyan);
+        box-shadow: 
+            0 0 20px rgba(0, 245, 255, 0.3),
+            inset 0 0 20px rgba(0, 245, 255, 0.1);
+        background: rgba(20, 20, 50, 0.8);
+    }
+
+    .input-icon {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--neon-cyan);
+        opacity: 0.5;
+        transition: opacity 0.3s ease;
+    }
+
+    .futuristic-input:focus + .input-icon {
+        opacity: 1;
+    }
+
+    .submit-btn {
+        width: 100%;
+        padding: 18px;
+        font-family: 'Orbitron', sans-serif;
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #fff;
+        background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple));
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        margin-top: 20px;
+    }
+
+    .submit-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+            90deg,
+            transparent,
+            rgba(255, 255, 255, 0.3),
+            transparent
+        );
+        transition: left 0.5s ease;
+    }
+
+    .submit-btn:hover::before {
+        left: 100%;
+    }
+
+    .submit-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 
+            0 10px 40px rgba(0, 245, 255, 0.4),
+            0 0 60px rgba(176, 38, 255, 0.3);
+    }
+
+    .submit-btn:active {
+        transform: translateY(0);
+    }
+
+    /* Decorative elements */
+    .corner-decoration {
+        position: absolute;
+        width: 30px;
+        height: 30px;
+        border: 2px solid var(--neon-cyan);
+        opacity: 0.5;
+    }
+
+    .corner-tl { top: 10px; left: 10px; border-right: none; border-bottom: none; }
+    .corner-tr { top: 10px; right: 10px; border-left: none; border-bottom: none; }
+    .corner-bl { bottom: 10px; left: 10px; border-right: none; border-top: none; }
+    .corner-br { bottom: 10px; right: 10px; border-left: none; border-top: none; }
+
+    /* Grid lines decoration */
+    .grid-lines {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: 
+            linear-gradient(rgba(0, 245, 255, 0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(0, 245, 255, 0.03) 1px, transparent 1px);
+        background-size: 30px 30px;
+        pointer-events: none;
+        z-index: -1;
+    }
+
+    /* Floating particles */
+    .particles {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        overflow: hidden;
+        z-index: -1;
+    }
+
+    .particle {
+        position: absolute;
+        width: 4px;
+        height: 4px;
+        background: var(--neon-cyan);
+        border-radius: 50%;
+        opacity: 0.3;
+        animation: float 15s infinite;
+    }
+
+    @keyframes float {
+        0%, 100% {
+            transform: translateY(100vh) rotate(0deg);
+            opacity: 0;
+        }
+        10% {
+            opacity: 0.3;
+        }
+        90% {
+            opacity: 0.3;
+        }
+        100% {
+            transform: translateY(-100vh) rotate(720deg);
+            opacity: 0;
+        }
+    }
+
+    /* Success message styling */
+    .success-message {
+        background: linear-gradient(135deg, rgba(0, 255, 136, 0.2), rgba(0, 245, 255, 0.2));
+        border: 1px solid rgba(0, 255, 136, 0.5);
+        border-radius: 10px;
+        padding: 15px;
+        margin-bottom: 20px;
+        color: #00ff88;
+        font-family: 'Rajdhani', sans-serif;
+        text-align: center;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .join-container {
+            margin: 20px;
+            padding: 25px;
+        }
+        .join-title {
+            font-size: 1.8rem;
+        }
+    }
+</style>
+
+<!-- Floating particles -->
+<div class="particles">
+    <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
+    <div class="particle" style="left: 20%; animation-delay: 2s;"></div>
+    <div class="particle" style="left: 30%; animation-delay: 4s;"></div>
+    <div class="particle" style="left: 40%; animation-delay: 1s;"></div>
+    <div class="particle" style="left: 50%; animation-delay: 3s;"></div>
+    <div class="particle" style="left: 60%; animation-delay: 5s;"></div>
+    <div class="particle" style="left: 70%; animation-delay: 2.5s;"></div>
+    <div class="particle" style="left: 80%; animation-delay: 1.5s;"></div>
+    <div class="particle" style="left: 90%; animation-delay: 4.5s;"></div>
+</div>
+
+<div class="join-container">
+    <div class="grid-lines"></div>
+    <div class="corner-decoration corner-tl"></div>
+    <div class="corner-decoration corner-tr"></div>
+    <div class="corner-decoration corner-bl"></div>
+    <div class="corner-decoration corner-br"></div>
+
+    <h1 class="join-title">JOIN US</h1>
+    <p class="join-subtitle">/// BECOME PART OF THE FUTURE ///</p>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="success-message">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
     <form method="post" action="{% url 'join' %}">
         {% csrf_token %}
-<div class="mb-3">
-    <input type="text" class="form-control"  placeholder="Enter your name" name="name">
-</div>
 
-<div class="mb-3">
-    <input type="text" class="form-control"   placeholder="Enter your last name" name="lname">
-</div>
+        <div class="form-group">
+            <label for="name">First Name</label>
+            <input type="text" class="form-control futuristic-input" id="name" placeholder="Enter your name" name="name" required>
+        </div>
 
-<div class="mb-3">
-    <input type="number" class="form-control"  placeholder="Enter your age" name="age">
-</div>
+        <div class="form-group">
+            <label for="lname">Last Name</label>
+            <input type="text" class="form-control futuristic-input" id="lname" placeholder="Enter your last name" name="lname" required>
+        </div>
 
-<div class="mb-3">
-    <input type="email" class="form-control" aria-describedby="emailHelp" placeholder="Enter your email" name="email">
-</div>
+        <div class="form-group">
+            <label for="age">Age</label>
+            <input type="number" class="form-control futuristic-input" id="age" placeholder="Enter your age" name="age" required>
+        </div>
 
-<div class="mb-3">
-    <!--  <label for="exampleInputEmail1" class="form-label">Email address</label>    -->
-    <input type="number" class="form-control"   placeholder="Enter your phone number" name="phone">
+        <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" class="form-control futuristic-input" id="email" aria-describedby="emailHelp" placeholder="Enter your email" name="email" required>
+        </div>
 
-</div>
+        <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="number" class="form-control futuristic-input" id="phone" placeholder="Enter your phone number" name="phone" required>
+        </div>
 
-<div class="mb-3">
-    <!-- <label for="exampleInputPassword1" class="form-label">Password</label>-->  
-    <input type="text" class="form-control"  placeholder="Enter your address" name="address">
+        <div class="form-group">
+            <label for="address">Address</label>
+            <input type="text" class="form-control futuristic-input" id="address" placeholder="Enter your address" name="address" required>
+        </div>
+
+        <button type="submit" class="submit-btn">
+            <span>⚡ Initialize Registration ⚡</span>
+        </button>
+    </form>
 </div>
-<br/>
-<!--  div class="mb-3 form-check">
-    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-    <label class="form-check-label" for="exampleCheck1">Check me out</label>
-  </div> -->
-  <button type="submit" class="btn btn-secondary">sign-up</button>
-</form>
 {% endblock %}
-
-
