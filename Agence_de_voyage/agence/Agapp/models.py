@@ -29,6 +29,7 @@ class Booking(models.Model): # Booking = Réservation
     customer_name = models.CharField(max_length=100)
     customer_email = models.EmailField( blank=True, null=True, default='')
     check_in_date = models.DateTimeField(auto_now_add=True)
+    phone_number = models.CharField(max_length=20, blank=True, null=True, default='')  
     check_out_date = models.DateTimeField(blank=True, null=True)
     means_of_transport = models.CharField(max_length=100, blank=True, null=True,choices=[('avion', 'Avion'), ('train', 'Train'), ('bus', 'Bus'), ('voiture', 'Voiture de location')])  # choices=[('avion', 'Avion'), ('train', 'Train'), ('bus', 'Bus'), ('voiture', 'Voiture de location')])
     def is_available(self):

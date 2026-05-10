@@ -16,11 +16,12 @@ def reservation(request):
     if request.method == 'POST':
         name = request.POST.get('customer_name')
         email = request.POST.get('customer_email')
+        phone_number = request.POST.get('phone_number')
         destination_id = request.POST.get('destination')
         check_in = request.POST.get('check_in')
         check_out = request.POST.get('check_out')
         hotel_id = request.POST.get('hotel')
-        means_of_transport = request.POST.get('transport')
+        means_of_transport = request.POST.get('means_of_transport')
         
         try:
             destination = Destination.objects.get(id=destination_id) if destination_id else None
@@ -30,6 +31,7 @@ def reservation(request):
                 booking = Booking(
                     customer_name=name,
                     customer_email=email,
+                    phone_number=phone_number,
                     destination=destination,
                     hotel=hotel,
                     check_in_date=check_in,

@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -142,7 +144,7 @@
 
     <div class="container-form">
         <!-- Formulaire de réservation -->
-        <form id="reservationForm" method="POST" action="{% url 'reservation' %}">
+        <form id="reservationForm" method="POST" action="{% url 'home' %}">
             {% csrf_token %}
             <input type="hidden" name="destination" value="{{ destination.id }}">
 
@@ -160,8 +162,8 @@
                 </div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="customer_phone">Numéro de téléphone :</label>
-                        <input type="tel" id="customer_phone" name="customer_phone" placeholder="Ex: 0555 123 456" required>
+                        <label for="phone_number">Numéro de téléphone :</label>
+                        <input type="tel" id="phone_number" name="phone_number" placeholder="Ex: 0555 123 456" required>
                     </div>
                     <div class="form-group">
                         <label for="nombre_personnes">Nombre de personnes :</label>
@@ -203,13 +205,13 @@
                 </div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="transport">Moyen de transport :</label>
-                        <select id="transport" name="transport" required onchange="updateTransportPrice()">
+                        <label for="means_of_transport">Moyen de transport :</label>
+                        <select id="means_of_transport" name="means_of_transport" required onchange="updateTransportPrice()">
                             <option value="">-- Sélectionnez --</option>
-                            <option value="50000">✈️ Avion — 50 000 DA</option>
-                            <option value="15000">🚂 Train — 15 000 DA</option>
-                            <option value="8000">🚌 Bus — 8 000 DA</option>
-                            <option value="25000">🚗 Voiture de location — 25 000 DA</option>
+                            <option value="avion" data-price="50000">✈️ Avion — 50 000 DA</option>
+                            <option value="train" data-price="15000">🚂 Train — 15 000 DA</option>
+                            <option value="bus" data-price="8000">🚌 Bus — 8 000 DA</option>
+                            <option value="voiture" data-price="25000">🚗 Voiture de location — 25 000 DA</option>
                         </select>
                         <input type="hidden" id="transport_price" value="0">
                     </div>
@@ -285,10 +287,12 @@
         }
 
         function updateTransportPrice() {
-            var select = document.getElementById('transport');
+            var select = document.getElementById('means_of_transport');
             var option = select.options[select.selectedIndex];
-            if (option.value) {
-                document.getElementById('transport_price').value = option.value;
+            if (option.value && option.getAttribute('data-price')) {
+                document.getElementById('transport_price').value = option.getAttribute('data-price');
+            } else {
+                document.getElementById('transport_price').value = 0;
             }
         }
 
@@ -335,7 +339,6 @@
             document.getElementById('sousTotal').textContent = sousTotal.toLocaleString('fr-FR') + ' DA';
             document.getElementById('montantTVA').textContent = montantTVA.toLocaleString('fr-FR') + ' DA';
             document.getElementById('totalTTC').textContent = totalTTC.toLocaleString('fr-FR') + ' DA';
-
             document.getElementById('resultatSection').style.display = 'block';
             document.getElementById('btnConfirmer').style.display = 'block';
             document.getElementById('resultatSection').scrollIntoView({ behavior: 'smooth' });
