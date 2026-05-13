@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Destination, Booking, Contact, Testimonial, pack_travel, Hotel, Booking
+from .models import Destination, Booking, Contact, Testimonial, pack_travel, Hotel
 from .forms import ContactForm
 from django.http import HttpResponseRedirect
 from django.urls import reverse
@@ -45,6 +45,7 @@ def reservation(request):
         except (Destination.DoesNotExist, Hotel.DoesNotExist):
             pass
     return render(request, 'reservation.html', {'Hotels': Hotels, 'Destinations': Destinations, 'customer_name': customer_name})
+
 
 def reselieuChoisi(request, destination_id):
     destination = Destination.objects.get(id=destination_id)
