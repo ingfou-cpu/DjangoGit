@@ -16,3 +16,15 @@ class ContactForm(ModelForm):
     class Meta:
         model = Contact
         fields =('name','phone', 'email', 'message')
+        labels = {
+            'name': 'Nom',
+            'phone': 'Téléphone',
+            'email': 'Email',
+            'message': 'Message'
+        }
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Votre nom'}),
+            'phone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Votre téléphone'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Votre email'}),
+            'message': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Votre message', 'rows': 5})
+        }
