@@ -69,14 +69,14 @@ class pack_travel(models.Model):
 #-------------------Contact form -------------------------------------------------------#
 
 class Contact(models.Model):
-    agence_name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100)
     email = models.EmailField( blank=True, null=True, default=''    )
     phone = models.CharField(max_length=20, blank=True, null=True, default='')
     message = models.TextField( blank=True)
     sent_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Adresse: {self.agence_name} - Email: {self.email} - Phone: {self.phone}"
+        return f"Adresse: {self.name} - Email: {self.email} - Phone: {self.phone} - Message: {self.message[:50]}..."  # Affiche les 50 premiers caractères du message
 #------------------- testimonials-------------------------------------------------------#
 class Testimonial(models.Model): # Testimonial = Avis = témoignage
     customer_name = models.ForeignKey(Booking, on_delete=models.CASCADE)
