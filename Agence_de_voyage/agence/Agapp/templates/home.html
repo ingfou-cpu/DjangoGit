@@ -27,23 +27,39 @@
                  <!-- Featured Project Row-->
                  <h1><center><b><em> Destinations et lieux Touristiques </em></b> </center></h1>
                 <!-- {{ Destination }}-->
-                {% for Destinations in Destination %}
-                <!-- Featured Project Row-->
-                <div class="row gx-0 mb-4 mb-lg-5 align-items-center">
-                    <div class="col-xl-8 col-lg-7"><img class="img-fluid" src="{{Destinations.image.url}}" alt="..." /></div>
-                    <div class="col-xl-4 col-lg-5">
-                        <div class="featured-text text-center text-lg-left">
-                            <h4>{{Destinations.name}}</h4>
-                            <p class="text-black-50 mb-0"> {{Destinations.description}}</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="text-center mb-5">
-                    <a href="{% url 'reselieuChoisi' Destinations.id %}" class="btn btn-success btn-lg">
-                        <i class="fas fa-check-circle me-2"></i>Choisir cette destination
-                    </a>
-                </div>
-                {% endfor %}
+{% for Destinations in Destination %}
+<div class="row gx-0 mb-4 mb-lg-5 align-items-center">
+
+    {% if forloop.counter|divisibleby:2 %}
+        <!-- Pair : Texte à gauche, Image à droite -->
+        <div class="col-xl-4 col-lg-5">
+            <div class="featured-text text-center text-lg-left">
+                <h4>{{Destinations.name}}</h4>
+                <p class="text-black-50 mb-0">{{Destinations.description}}</p>
+            </div>
+        </div>
+        <div class="col-xl-8 col-lg-7"><img class="img-fluid" src="{{Destinations.image.url}}" alt="..." /></div>
+
+    {% else %}
+        <!-- Impair : Image à gauche, Texte à droite -->
+        <div class="col-xl-8 col-lg-7"><img class="img-fluid" src="{{Destinations.image.url}}" alt="..." /></div>
+        <div class="col-xl-4 col-lg-5">
+            <div class="featured-text text-center text-lg-left">
+                <h4>{{Destinations.name}}</h4>
+                <p class="text-black-50 mb-0">{{Destinations.description}}</p>
+            </div>
+        </div>
+
+    {% endif %}
+
+</div>
+<div class="text-center mb-5">
+    <a href="{% url 'reselieuChoisi' Destinations.id %}" class="btn btn-success btn-lg">
+        <i class="fas fa-check-circle me-2"></i>Choisir cette destination
+    </a>
+</div>
+{% endfor %}
+
 
                 <!-- Project Two Row-->
                  <h1><center><b><em> Pack Travel Loop </em></b> </center></h1>
