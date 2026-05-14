@@ -11,9 +11,7 @@
                         <h1 class="mx-auto my-0 text-uppercase">El bayadh travels</h1>
                         <br><br>
                         <a class="btn btn-primary" href="#about">Get Started</a>
-                        <a class="btn btn-success ms-3" href="{% url 'reservation' %}">
-                            <i class="fas fa-calendar-check me-2"></i>Réserver maintenant
-                        </a>
+                        <br><br>    
                     </div>
                 </div>
             </div>
@@ -27,58 +25,37 @@
                  <!-- Featured Project Row-->
                  <h1><center><b><em> Destinations et lieux Touristiques </em></b> </center></h1>
                 <!-- {{ Destination }}-->
-{% for Destinations in Destination %}
-<div class="row gx-0 mb-4 mb-lg-5 align-items-center">
+                {% for Destinations in Destination %}
+                <div class="row gx-0 mb-4 mb-lg-5 align-items-center">
 
-    {% if forloop.counter|divisibleby:2 %}
-        <!-- Pair : Texte à gauche, Image à droite -->
-        <div class="col-xl-4 col-lg-5">
-            <div class="featured-text text-center text-lg-left">
-                <h4>{{Destinations.name}}</h4>
-                <p class="text-black-50 mb-0">{{Destinations.description}}</p>
-            </div>
-        </div>
-        <div class="col-xl-8 col-lg-7"><img class="img-fluid" src="{{Destinations.image.url}}" alt="..." /></div>
-
-    {% else %}
-        <!-- Impair : Image à gauche, Texte à droite -->
-        <div class="col-xl-8 col-lg-7"><img class="img-fluid" src="{{Destinations.image.url}}" alt="..." /></div>
-        <div class="col-xl-4 col-lg-5">
-            <div class="featured-text text-center text-lg-left">
-                <h4>{{Destinations.name}}</h4>
-                <p class="text-black-50 mb-0">{{Destinations.description}}</p>
-            </div>
-        </div>
-
-    {% endif %}
-
-</div>
-<div class="text-center mb-5">
-    <a href="{% url 'reselieuChoisi' Destinations.id %}" class="btn btn-success btn-lg">
-        <i class="fas fa-check-circle me-2"></i>Choisir cette destination
-    </a>
-</div>
-{% endfor %}
-
-
-                <!-- Project Two Row-->
-                 <h1><center><b><em> Pack Travel Loop </em></b> </center></h1>
-                {% for pack_travels in pack_travel %}
-                <div class="row gx-0 justify-content-center">
-                    <div class="col-lg-6"><img class="img-fluid" src="{{pack_travels.image.url}}" alt="..." /></div>
-                    reservations
-                    <div class="col-lg-6 order-lg-first">
-                        <div class="bg-black text-center h-100 project">
-                            <div class="d-flex h-100">
-                                <div class="project-text w-100 my-auto text-center text-lg-right">
-                                    <h4 class="text-white">{{pack_travels.pack_name}}</h4>
-                                    <p class="mb-0 text-white-50">{{pack_travels.description}}</p>
-                                </div>
+                    {% if forloop.counter|divisibleby:2 %}
+                        <!-- Pair : Texte à gauche, Image à droite -->
+                        <div class="col-xl-4 col-lg-5">
+                            <div class="featured-text text-center text-lg-left">
+                                <h4>{{Destinations.name}}</h4>
+                                <p class="text-black-50 mb-0">{{Destinations.description}}</p>
                             </div>
                         </div>
-                    </div>
+                        <div class="col-xl-8 col-lg-7"><img class="img-fluid" src="{{Destinations.image.url}}" alt="..." /></div>
+
+                    {% else %}
+                        <!-- Impair : Image à gauche, Texte à droite -->
+                        <div class="col-xl-8 col-lg-7"><img class="img-fluid" src="{{Destinations.image.url}}" alt="..." /></div>
+                        <div class="col-xl-4 col-lg-5">
+                            <div class="featured-text text-center text-lg-left">
+                                <h4>{{Destinations.name}}</h4>
+                                <p class="text-black-50 mb-0">{{Destinations.description}}</p>
+                            </div>
+                        </div>
+
+                {% endif %}
+
                 </div>
-                <br>
+                <div class="text-center mb-5">
+                    <a href="{% url 'reselieuChoisi' Destinations.id %}" class="btn btn-success btn-lg">
+                        <i class="fas fa-check-circle me-2"></i>Choisir cette destination
+                    </a>
+                </div>
                 {% endfor %}
 
             </div>

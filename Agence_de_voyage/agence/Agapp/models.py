@@ -59,12 +59,24 @@ class Booking(models.Model): # Booking = Réservation
 class pack_travel(models.Model):
     pack_name = models.CharField(max_length=100)
     description = models.TextField( blank=True)
-    price = models.DecimalField(max_digits=10, decimal_places=2)
-    reservation_link = models.URLField( blank=True)
     image = models.ImageField(upload_to='pack_travel_images/', blank=True, null=True)
-
+    image_circuit = models.ImageField(upload_to='circuit_images/', blank=True, null=True)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    galerie_photos = models.ImageField(upload_to='galerie_photos/', blank=True, null=True) 
+    itinerary = models.TextField(blank=True)
+    date = models.DateField(blank=True, null=True)
+    fiche_technique = models.TextField(blank=True)
     def __str__(self):
         return self.pack_name
+#-------------------reservation pack_travel -------------------------------------------------------#
+class reser_circuit(models.Model):
+    pack_travel = models.ForeignKey(pack_travel, on_delete=models.CASCADE)
+    customer_name = models.CharField(max_length=100)
+    customer_email = models.EmailField( blank=True, null=True, default='')
+    phone_number = models.CharField(max_length=20, blank=True, null=True, default='') 
+     
+    def __str__(self):
+        return f"Booking for Mr {self.customer_name} to {self.pack_travel.pack_name}"
 
 #-------------------Contact form -------------------------------------------------------#
 

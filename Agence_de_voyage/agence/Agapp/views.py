@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Destination, Booking, Contact, Testimonial, pack_travel, Hotel
+from .models import Destination, Booking, Contact, Testimonial, pack_travel, Hotel,reser_circuit
 from .forms import ContactForm
 from django.http import HttpResponseRedirect
 from django.urls import reverse
@@ -159,3 +159,8 @@ def about(request):
 def croisiere(request):
      pack_travels = pack_travel.objects.all()
      return render(request, 'croisiere.html', {'pack_travel': pack_travels})
+
+def circuit(request):
+    pack_travels = pack_travel.objects.all()
+    Destinations = Destination.objects.all()
+    return render(request, 'circuit_touris.html', {'Destination': Destinations, 'pack_travels': pack_travels})   
