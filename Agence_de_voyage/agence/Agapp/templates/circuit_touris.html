@@ -2,84 +2,139 @@
 {% load static %}
 
 {% block content %}
-
-
+{% load humanize %}
 
 <br><br><br><br>
 <!-- Project Two Row-->
-<h1><center><b><em> Circuit Touristique </em></b> </center></h1>
+<h1 class="display-4 text-primary fw-bold text-center"><center><b><em> Circuit Touristique </em></b> </center></h1>
+<br><br><br><br>
+<center><h1 class="display-6 text-primary fw-bold text-center">Nos circuits touristiques</h1></center>
+<br><br><br><br>
 {% for pack_travels in pack_travels %}
+<h2 class="display-4 text-primary fw-bold text-center"><center><b><em> {{pack_travels.pack_name}} </em></b> </center></h2>
 <div class="row gx-0 justify-content-center" data-aos="fade-up">
-    <div class="col-lg-6"><img class="img-fluid" src="{{pack_travels.image.url}}" alt="..." /></div>
-    reservations
-    <div class="col-lg-6 order-lg-first">
+    <div class="col-lg-5"><img class="img-fluid" src="{{pack_travels.image.url}}" alt="..." /></div>
+    <div class="col-lg-5 order-lg-first">
         <div class="bg-black text-center h-100 project">
             <div class="d-flex h-100">
                 <div class="project-text w-100 my-auto text-center text-lg-right">
-                    <h4 class="text-white">{{pack_travels.pack_name}}</h4>
+                    <h3 class="text-white">Description</h3>
                     <p class="mb-0 text-white-50">{{pack_travels.description}}</p>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<center><div class="col-lg-8"><img class="img-fluid" style="background-color: ivory;" src="{{pack_travels.image_circuit.url}}" alt="..." /></div></center>
-<center><h4 class="text-white">{{pack_travels.pack_name}}</h4></center>
-<br><br><br><br><br>
-<center><h4 class="text-white">Informations diverses</h4></center>
-<br><br><br><br><br>
-<p class="mb-0 text-white-50">{{pack_travels.informations_diverses}}</p>
-
-<div class="text-center">   
-    <ul class="nav nav-pills mb-3 justify-content-center" id="pills-tab" role="tablist" data-aos="fade-up">
-    <li class="nav-item" role="presentation">
-        <button class="nav-link" id="pills-itineraire-tab" data-bs-toggle="pill" data-bs-target="#pills-itineraire" type="button" role="tab" aria-controls="pills-itineraire" pills-itineraire-selected="false">Itinéraire</button></li>
-    <li class="nav-item" role="presentation">
-        <button class="nav-link" id="pills-prix-dates-tab" data-bs-toggle="pill" data-bs-target="#pills-prix-dates" type="button" role="tab" aria-controls="pills-prix-dates" aria-selected="false">Prix &amp; Dates</button></li>
-    <li class="nav-item" role="presentation">
-        <button class="nav-link active" id="pills-fiche-technique-tab" data-bs-toggle="pill" data-bs-target="#pills-fiche-technique" type="button" role="tab" aria-controls="pills-fiche-technique" aria-selected="true">Fiche technique</button></li>
-    <li class="nav-item" role="presentation">
-        <button class="nav-link" id="pills-nos-engagements-tab" data-bs-toggle="pill" data-bs-target="#pills-nos-engagements" type="button" role="tab" aria-controls="pills-nos-engagements" aria-selected="false">Nos engagements</button></li>
-    <li class="nav-item" role="presentation">
-        <button class="nav-link" id="pills-galerie-photos-tab" data-bs-toggle="pill" data-bs-target="#pills-galerie-photos" type="button" role="tab" aria-controls="pills-galerie-photos" aria-selected="false">Galerie Photos</button></li>
-    </ul>
+<br><br>
+<div class="d-grid gap-2">
+    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#dev-content-{{ forloop.counter }}" aria-expanded="false" aria-controls="dev-content-{{ forloop.counter }}" id="btn-dev-{{ forloop.counter }}">Developer</button>
 </div>
 
-<div class="col-lg-5 text-center order-lg-first mb-5 mb-lg-0 mb-lg-3 mb-xl-0" id="pills-tabContent">
-    
-    <!-- Itinéraire Tab Content -->
-    <div class="tab-pane fade show active" id="pills-itineraire" role="tabpanel" aria-labelledby="pills-itineraire-tab">
-        <h3 class="mb-4 text-white text-center">Itinéraire</h3>
-        <p class="mb-4 text-white text-center"> {{ pack_travels.itinerary }} </p>
+<div class="collapse" id="dev-content-{{ forloop.counter }}">
+    <br><br>
+    <center><div class="col-lg-6"><img class="img-fluid" style="background-color: ivory;" src="{{pack_travels.image_circuit.url}}" alt="..." /></div></center>
+    <center><h4 class="text-white">{{pack_travels.pack_name}}</h4></center>
+    <br><br><br><br><br>
+    <center><h1 class="display-6 text-primary fw-bold text-center">Informations diverses</h1></center>
+    <br>
+
+    <!-- ===== PILLS NAVIGATION ===== -->
+    <div class="d-flex justify-content-center">
+        <ul class="nav nav-pills mb-3" id="pills-tab-{{ forloop.counter }}" role="tablist" data-aos="fade-up">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="pills-itineraire-{{ forloop.counter }}-tab" data-bs-toggle="pill" data-bs-target="#pills-itineraire-{{ forloop.counter }}" type="button" role="tab" aria-controls="pills-itineraire-{{ forloop.counter }}" aria-selected="false">Itinéraire</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="pills-prix-dates-{{ forloop.counter }}-tab" data-bs-toggle="pill" data-bs-target="#pills-prix-dates-{{ forloop.counter }}" type="button" role="tab" aria-controls="pills-prix-dates-{{ forloop.counter }}" aria-selected="false">Prix & Dates</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="pills-fiche-technique-{{ forloop.counter }}-tab" data-bs-toggle="pill" data-bs-target="#pills-fiche-technique-{{ forloop.counter }}" type="button" role="tab" aria-controls="pills-fiche-technique-{{ forloop.counter }}" aria-selected="true">Fiche technique</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="pills-nos-engagements-{{ forloop.counter }}-tab" data-bs-toggle="pill" data-bs-target="#pills-nos-engagements-{{ forloop.counter }}" type="button" role="tab" aria-controls="pills-nos-engagements-{{ forloop.counter }}" aria-selected="false">Nos engagements</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="pills-galerie-photos-{{ forloop.counter }}-tab" data-bs-toggle="pill" data-bs-target="#pills-galerie-photos-{{ forloop.counter }}" type="button" role="tab" aria-controls="pills-galerie-photos-{{ forloop.counter }}" aria-selected="false">Galerie Photos</button>
+            </li>
+        </ul>
     </div>
-    
-    <!-- Prix & Dates Tab Content -->
-    <div class="tab-pane fade" id="pills-prix-dates" role="tabpanel" aria-labelledby="pills-prix-dates-tab">
-        <h3>Prix & Dates</h3>
-        <p>{{ pack_travels.prix_dates }}</p>
+
+    <!-- ===== PILLS CONTENT ===== -->
+    <div class="tab-content col-lg-10 mx-auto" id="pills-tabContent-{{ forloop.counter }}">
+
+        <!-- Itinéraire Tab Content -->
+        <div class="tab-pane fade" id="pills-itineraire-{{ forloop.counter }}" role="tabpanel" aria-labelledby="pills-itineraire-{{ forloop.counter }}-tab">
+            <h3 class="mb-4 text-white text-center">Itinéraire</h3>
+            <p class="mb-4 text-white text-center">{{ pack_travels.itinerary|linebreaksbr }}</p>
+        </div>
+
+        <!-- Prix & Dates Tab Content -->
+        <div class="tab-pane fade" id="pills-prix-dates-{{ forloop.counter }}" role="tabpanel" aria-labelledby="pills-prix-dates-{{ forloop.counter }}-tab">
+            <h3 class="text-white text-center">Dates disponibles et prix par personne</h3>
+            <table class="table table-bordered text-white mt-3" style="border-collapse: collapse; width: 100%;">
+                <thead>
+                    <tr>
+                        <th style="width: 33.33%;">Prix</th>
+                        <th style="width: 33.33%;">Dates</th>
+                        <th style="width: 33.33%;">Réserver</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{pack_travels.price |intcomma  }} DA</td>
+                        <td>a partir du {{pack_travels.date | date:"d/m/Y"}}</td>
+                        <td><a class="btn btn-primary btn-sm" href="https://www.terres-touareg.com/contact/">Réserver</a></td>
+                    </tr>
+                </tbody>
+            </table>
+            <h3 class="text-white mt-4">Ce qui est inclus dans le prix</h3>
+            <ul class="text-white-50">
+                <li>Accueil et prise en charge à l'aéroport de Djanet par un guide professionnel Touareg expérimenté et ayant une connaissance parfaite du terrain.</li>
+                <li>Frais d'entrée pour les parcs nationaux et les sites protégés.</li>
+                <li>Ânes tout le long du parcours.</li>
+                <li>Utilisation de véhicules tout-terrain 4×4 pour les grands déplacements.</li>
+                <li>Quatre repas par jour lors des bivouacs, comprenant le petit-déjeuner, le déjeuner, le goûter et le dîner.</li>
+                <li>Fourniture d'eau, de thé et soft pendant toute la durée du voyage.</li>
+                <li>Présence d'un cuisinier pendant toute la durée du séjour.</li>
+                <li>Mise à disposition de matériel de bivouac, incluant des tentes, des matelas et des couvertures.</li>
+                <li>Assistance à l'obtention du visa de régularisation.</li>
+            </ul>
+            <h3 class="text-white mt-4">Ce qui n'est pas inclus dans le prix</h3>
+            <ul class="text-white-50">
+                <li>Les frais de transport aérien pour se rendre à Djanet.</li>
+                <li>Assurance voyage pour couvrir d'éventuels incidents pendant le séjour.</li>
+                <li>Dépenses personnelles et éventuels pourboires pour le personnel.</li>
+                <li>Les frais de visa.</li>
+            </ul>
+        </div>
+
+        <!-- Fiche Technique Tab Content (actif par défaut) -->
+        <div class="tab-pane fade show active" id="pills-fiche-technique-{{ forloop.counter }}" role="tabpanel" aria-labelledby="pills-fiche-technique-{{ forloop.counter }}-tab">
+            <h3 class="text-white text-center">Fiche Technique</h3>
+            <p class="text-white-50">{{ pack_travels.fiche_technique|linebreaksbr }}</p>
+        </div>
+
+        <!-- Nos Engagements Tab Content -->
+        <div class="tab-pane fade" id="pills-nos-engagements-{{ forloop.counter }}" role="tabpanel" aria-labelledby="pills-nos-engagements-{{ forloop.counter }}-tab">
+            <h3 class="text-white text-center">Nos Engagements</h3>
+            <p class="text-white-50 text-center">Notre partenaire s'engage sur cinq points :</p>
+            <ul class="text-white-50 mx-auto" style="list-style-position: inside; display: inline-block; text-align: left;">
+                <li>Un guide professionnel et expérimenté.</li>
+                <li>Un accompagnement personnalisé.</li>
+                <li>Un matériel de qualité.</li>
+                <li>Un service de restauration de qualité.</li>
+                <li>Une assistance médicale.</li>
+            </ul>
+        </div>
+
+        <!-- Galerie Photos Tab Content -->
+        <div class="tab-pane fade" id="pills-galerie-photos-{{ forloop.counter }}" role="tabpanel" aria-labelledby="pills-galerie-photos-{{ forloop.counter }}-tab">
+            <h3 class="text-white text-center">Galerie Photos</h3>
+            <p class="text-white-50">{{ pack_travels.galerie_photos }}</p>
+        </div>
     </div>
-    
-    <!-- Fiche Technique Tab Content -->
-    <div class="tab-pane fade show active" id="pills-fiche-technique" role="tabpanel" aria-labelledby="pills-fiche-technique-tab">
-        <h3>Fiche Technique</h3>
-        <p>{{ pack_travels.fiche_technique }}</p>
-    </div>
-    
-    <!-- Nos Engagements Tab Content -->
-    <div class="tab-pane fade" id="pills-nos-engagements" role="tabpanel" aria-labelledby="pills-nos-engagements-tab">
-        <h3>Nos Engagements</h3>
-        <p>{{ pack_travels.nos_engagements }}</p>
-    </div>
-    
-    <!-- Galerie Photos Tab Content -->
-    <div class="tab-pane fade" id="pills-galerie-photos" role="tabpanel" aria-labelledby="pills-galerie-photos-tab">
-        <h3>Galerie Photos</h3>
-        <p>{{ pack_travels.galerie_photos }}</p>
-    </div>
-    
 </div>
  <br><br><br><br>
 {% endfor %}
 <br><br><br><br>
 {% endblock %}
-

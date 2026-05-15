@@ -11225,3 +11225,40 @@ body {
 .footer {
   padding: 5rem 0;
 }
+
+/* ===== Custom Pills Navigation ===== */
+.nav-pills {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.nav-pills .nav-link {
+  color: rgba(255, 255, 255, 0.7);
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 2rem;
+  padding: 0.5rem 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.nav-pills .nav-link:hover {
+  color: #fff;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.nav-pills .nav-link.active {
+  color: #fff;
+  background-color: #64a19d;
+  border-color: #64a19d;
+}
+
+.tab-content {
+  margin-top: 1rem;
+}
+
+.tab-content .tab-pane {
+  padding: 1.5rem 0;
+}

@@ -5,7 +5,7 @@
 */
 //
 // Scripts
-// 
+//
 
 window.addEventListener('DOMContentLoaded', event => {
 
@@ -23,7 +23,7 @@ window.addEventListener('DOMContentLoaded', event => {
 
     };
 
-    // Shrink the navbar 
+    // Shrink the navbar
     navbarShrink();
 
     // Shrink the navbar when page is scrolled
@@ -49,6 +49,20 @@ window.addEventListener('DOMContentLoaded', event => {
                 navbarToggler.click();
             }
         });
+    });
+
+    // Toggle Developer button text on collapse show/hide
+    document.querySelectorAll('[id^="btn-dev-"]').forEach(function(btn) {
+        var targetId = btn.getAttribute('data-bs-target');
+        var targetEl = document.querySelector(targetId);
+        if (targetEl) {
+            targetEl.addEventListener('shown.bs.collapse', function () {
+                btn.textContent = 'Masquer';
+            });
+            targetEl.addEventListener('hidden.bs.collapse', function () {
+                btn.textContent = 'Developer';
+            });
+        }
     });
 
 });
