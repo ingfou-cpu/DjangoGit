@@ -11,20 +11,40 @@
 <center><h1 class="display-6 text-primary fw-bold text-center">Nos circuits touristiques</h1></center>
 <br><br><br><br>
 {% for pack_travels in pack_travels %}
-<h2 class="display-4 text-primary fw-bold text-center"><center><b><em> {{pack_travels.pack_name}} </em></b> </center></h2>
-<div class="row gx-0 justify-content-center" data-aos="fade-up">
-    <div class="col-lg-5"><img class="img-fluid" src="{{pack_travels.image.url}}" alt="..." /></div>
-    <div class="col-lg-5 order-lg-first">
-        <div class="bg-black text-center h-100 project">
-            <div class="d-flex h-100">
-                <div class="project-text w-100 my-auto text-center text-lg-right">
-                    <h3 class="text-white">Description</h3>
-                    <p class="mb-0 text-white-50">{{pack_travels.description}}</p>
+                <h2 class="display-4 text-primary fw-bold text-center"><center><b><em> {{pack_travels.pack_name}} </em></b> </center></h2>
+                <div class="row gx-0 justify-content-center" data-aos="fade-up">
+                    {% if forloop.counter|divisibleby:2 %}
+                    <!-- Pair : Image à gauche, Description à droite -->
+                    <div class="col-lg-5">
+                        <img class="img-fluid" src="{{pack_travels.image.url}}" alt="..." />
+                    </div>
+                    <div class="col-lg-5">
+                        <div class="bg-black text-center h-100 project">
+                            <div class="d-flex h-100">
+                                <div class="project-text w-100 my-auto text-center text-lg-left">
+                                    <h3 class="text-white">Description</h3>
+                                    <p class="mb-0 text-white-50">{{pack_travels.description}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% else %}
+                    <!-- Impaire : Description à gauche, Image à droite -->
+                    <div class="col-lg-5">
+                        <div class="bg-black text-center h-100 project">
+                            <div class="d-flex h-100">
+                                <div class="project-text w-100 my-auto text-center text-lg-right">
+                                    <h3 class="text-white">Description</h3>
+                                    <p class="mb-0 text-white-50">{{pack_travels.description}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-5">
+                        <img class="img-fluid" src="{{pack_travels.image.url}}" alt="..." />
+                    </div>
+                    {% endif %}
                 </div>
-            </div>
-        </div>
-    </div>
-</div>
 <br><br>
 <div class="d-grid gap-2">
     <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#dev-content-{{ forloop.counter }}" aria-expanded="false" aria-controls="dev-content-{{ forloop.counter }}" id="btn-dev-{{ forloop.counter }}">Developer</button>
@@ -35,9 +55,12 @@
     <center><div class="col-lg-6"><img class="img-fluid" style="background-color: ivory;" src="{{pack_travels.image_circuit.url}}" alt="..." /></div></center>
     <center><h4 class="text-white">{{pack_travels.pack_name}}</h4></center>
     <br><br><br><br><br>
+            <div class="text-center mb-5">
+                <a href="{% url 'circuitChoisi' pack_travels.id %}" class="btn btn-success btn-lg">
+                <i class="fas fa-check-circle me-2"></i>Choisir ce circuit </a>
+            </div>
     <center><h1 class="display-6 text-primary fw-bold text-center">Informations diverses</h1></center>
     <br>
-
     <!-- ===== PILLS NAVIGATION ===== -->
     <div class="d-flex justify-content-center">
         <ul class="nav nav-pills mb-3" id="pills-tab-{{ forloop.counter }}" role="tablist" data-aos="fade-up">
@@ -52,9 +75,6 @@
             </li>
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="pills-nos-engagements-{{ forloop.counter }}-tab" data-bs-toggle="pill" data-bs-target="#pills-nos-engagements-{{ forloop.counter }}" type="button" role="tab" aria-controls="pills-nos-engagements-{{ forloop.counter }}" aria-selected="false">Nos engagements</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="pills-galerie-photos-{{ forloop.counter }}-tab" data-bs-toggle="pill" data-bs-target="#pills-galerie-photos-{{ forloop.counter }}" type="button" role="tab" aria-controls="pills-galerie-photos-{{ forloop.counter }}" aria-selected="false">Galerie Photos</button>
             </li>
         </ul>
     </div>
@@ -74,16 +94,15 @@
             <table class="table table-bordered text-white mt-3" style="border-collapse: collapse; width: 100%;">
                 <thead>
                     <tr>
-                        <th style="width: 33.33%;">Prix</th>
-                        <th style="width: 33.33%;">Dates</th>
-                        <th style="width: 33.33%;">Réserver</th>
+                        <th style="width: 50.00%;">Prix</th>
+                        <th style="width: 50.00%;">Dates</th>
+
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td>{{pack_travels.price |intcomma  }} DA</td>
                         <td>a partir du {{pack_travels.date | date:"d/m/Y"}}</td>
-                        <td><a class="btn btn-primary btn-sm" href="https://www.terres-touareg.com/contact/">Réserver</a></td>
                     </tr>
                 </tbody>
             </table>
@@ -128,13 +147,11 @@
         </div>
 
         <!-- Galerie Photos Tab Content -->
-        <div class="tab-pane fade" id="pills-galerie-photos-{{ forloop.counter }}" role="tabpanel" aria-labelledby="pills-galerie-photos-{{ forloop.counter }}-tab">
-            <h3 class="text-white text-center">Galerie Photos</h3>
-            <p class="text-white-50">{{ pack_travels.galerie_photos }}</p>
-        </div>
     </div>
+
 </div>
- <br><br><br><br>
+
+<br><br><br><br>
 {% endfor %}
 <br><br><br><br>
 {% endblock %}

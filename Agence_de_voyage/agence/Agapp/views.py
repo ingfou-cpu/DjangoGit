@@ -84,7 +84,9 @@ def reselieuChoisi(request, destination_id):
         'confirmation_message': confirmation_message
     })
 
-def reservCroisiere(request, pack_travel_id):
+
+
+"""def reservCroisiere(request, pack_travel_id):
     reserCoisiere.objects.filter(pack_travel_id=pack_travel_id).delete()
     pack_travel_instance = pack_travel.objects.get(id=pack_travel_id)
     customer_name = ''
@@ -137,7 +139,7 @@ def reservCroisiere(request, pack_travel_id):
         'nombre_enfants': nombre_enfants,
         'confirmation_message': confirmation_message,
         'show_confirmation': show_confirmation
-    })
+    })"""
 
 def contact(request):
     submitted = False
@@ -159,8 +161,34 @@ def about(request):
 def croisiere(request):
      pack_travels = pack_travel.objects.all()
      return render(request, 'croisiere.html', {'pack_travel': pack_travels})
-
+#-----------------------------circuit------------------------------------------------------------
 def circuit(request):
     pack_travels = pack_travel.objects.all()
     Destinations = Destination.objects.all()
     return render(request, 'circuit_touris.html', {'Destination': Destinations, 'pack_travels': pack_travels})   
+
+def circuitChoisi(request, pack_travel_id):
+    pack_travels = pack_travel.objects.get(id=pack_travel_id)
+    confirmation_message = None
+
+    if request.method == 'POST':
+        name = request.POST.get('customer_name')
+        email = request.POST.get('customer_email')
+        phone_number = request.POST.get('phone_number')
+
+        try:
+            booking = reser_circuit(
+                customer_name=name,
+                customer_email=email,
+                phone_number=phone_number,
+                pack_travel=pack_travels
+            )
+            booking.save()
+            confirmation_message = "✅ Votre réservation a été confirmée avec succès !"
+        except Exception as e:
+            confirmation_message = f"❌ Erreur : {str(e)}"
+
+    return render(request, 'circuitChoisi.html', {
+        'pack_travels': pack_travels,
+        'confirmation_message': confirmation_message
+    })

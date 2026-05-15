@@ -7,6 +7,7 @@ urlpatterns = [
     path('contact/', views.contact, name='contact'),    
     path('circuit/', views.circuit, name='circuit'),
     path('reselieuChoisi/<int:destination_id>/', views.reselieuChoisi, name='reselieuChoisi'),
+    path('circuitChoisi/<int:pack_travel_id>/', views.circuitChoisi, name='circuitChoisi'),
 
 ]
 
