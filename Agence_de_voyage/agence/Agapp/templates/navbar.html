@@ -1,20 +1,38 @@
+{% load static %}
 <!-- Navigation-->
-        <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
-            <div class="container px-4 px-lg-5">
-                <a class="navbar-brand" href="{% url 'home' %}">El bayadh travels</a>
-                <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                    Menu
-                    <i class="fas fa-bars"></i>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarResponsive">
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'home' %}#projects">Offres de voyage</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'contact' %}">Contact</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'circuit' %}">Circuit Touristique</a></li>
-                    
+{% load static %}
+<!-- Navigation-->
+        
+<nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+<link href="{% static 'css/styles.css' %}"  rel="stylesheet" />    
+    <div class="container px-4 px-lg-5">
+        <a class="navbar-brand" href="{% url 'home' %}">El bayadh travels</a>
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            Menu
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'home' %}#projects">Offres de voyage</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'contact' %}">Contact</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'circuit' %}">Circuit Touristique</a></li>
+             
+                <!-- Icône de panier améliorée -->
+                <div class="cart-icon-container">
 
-                    </ul>
                 </div>
-            </div>
-        </nav>
+                
+                <form class="d-flex">
+                    <a href="{% url 'cart_summary' %}" class="btn btn-cart btn-outline-dark">
+                        <i class="bi bi-cart-fill me-1"></i>
+                        <span class="btn-text">Cart</span>
+                        <span class="badge bg-dark text-white ms-1 rounded-pill cart-badge">0</span>
+                    </a>
+                </form>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+

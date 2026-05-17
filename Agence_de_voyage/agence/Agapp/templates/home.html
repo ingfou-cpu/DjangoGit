@@ -10,7 +10,7 @@
                     <div class="text-center">
                         <h1 class="mx-auto my-0 text-uppercase">El bayadh travels</h1>
                         <br><br>
-                        <a class="btn btn-primary" href="#about">Get Started</a>
+                        <h2 class="text-white-50 mx-auto mt-2 mb-5">Explorez le monde avec nos offres de voyage exceptionnelles !</h2>
                         <br><br>    
                     </div>
                 </div>
@@ -53,8 +53,9 @@
                 </div>
                 <div class="text-center mb-5">
                     <a href="{% url 'reselieuChoisi' Destinations.id %}" class="btn btn-success btn-lg">
-                        <i class="fas fa-check-circle me-2"></i>Choisir cette destination
+                        <i class="fas fa-check-circle me-2"></i>Choisir cette destination ID: {{ Destinations.id }}
                     </a>
+                    <button type="button" class="btn btn-success btn-lg" data-bs-toggle="modal" data-bs-target="#exampleModal"> <i class="fas fa-check-circle me-2"></i>Ajouter au Panier>  </button>
                 </div>
                 {% endfor %}
 
