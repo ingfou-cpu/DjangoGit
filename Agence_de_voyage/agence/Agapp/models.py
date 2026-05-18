@@ -3,7 +3,8 @@ from django.db import models
 # Create your models here.
 #-------------------Destinations ----------------------------------------------------------#
 class Destination(models.Model):
-    name = models.CharField(max_length=100, blank=False, null=False, default='')   
+    name = models.CharField(max_length=100, blank=False, null=False, default='') 
+    price = models.DecimalField(max_digits=10, decimal_places=2, blank=False, null=False, default=0.00)  
     city_name = models.CharField(max_length=100)
     description = models.TextField( blank=True)
     image = models.ImageField(upload_to='destination_images/', blank=True, null=True)

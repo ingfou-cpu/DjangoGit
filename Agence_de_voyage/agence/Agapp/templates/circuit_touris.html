@@ -11,6 +11,7 @@
 <center><h1 class="display-6 text-primary fw-bold text-center">Nos circuits touristiques</h1></center>
 <br><br><br><br>
 {% for pack_travels in pack_travels %}
+<br><br><br><br>
                 <h2 class="display-4 text-primary fw-bold text-center"><center><b><em> {{pack_travels.pack_name}} </em></b> </center></h2>
                 <div class="row gx-0 justify-content-center" data-aos="fade-up">
                     {% if forloop.counter|divisibleby:2 %}
@@ -43,8 +44,10 @@
                     <div class="col-lg-5">
                         <img class="img-fluid" src="{{pack_travels.image.url}}" alt="..." />
                     </div>
+                    <br><br><br><br><br><br><br><br>
                     {% endif %}
                 </div>
+                <br><br><br><br>
 <br><br>
 <div class="d-grid gap-2">
     <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#dev-content-{{ forloop.counter }}" aria-expanded="false" aria-controls="dev-content-{{ forloop.counter }}" id="btn-dev-{{ forloop.counter }}">Developer</button>

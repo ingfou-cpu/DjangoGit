@@ -8,7 +8,7 @@
             <div class="container px-4 px-lg-5 d-flex h-100 align-items-center justify-content-center">
                 <div class="d-flex justify-content-center">
                     <div class="text-center">
-                        <h1 class="mx-auto my-0 text-uppercase">Shoping Cart</h1>
+                        <h1 class="mx-auto my-0 text-uppercase">Shopping Cart</h1>
                         <br><br>
                         <h2 class="text-white-50 mx-auto mt-2 mb-5">View and checkout your cart</h2>
                         <br><br>    
@@ -19,27 +19,80 @@
         <br>
         <br><br><br><br><br><br><br><br><br>
         <div class="container">
-            <h1>Panier</h1>
+            <h1>🛒 Panier</h1>
+            {% if cart.cart %}
             <table class="table">
                 <thead>
                     <tr>
                         <th>Produit</th>
-                        <th>Prix</th>
+                        <th>Type</th>
+                        <th>Prix unitaire</th>
                         <th>Quantité</th>
                         <th>Total</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
-
+                    {% for item in cart %}
                     <tr>
-                        <td>{{ item.product.name }}</td>
-                        <td>{{ item.product.price }}</td>
+                        <td>{{ item.name }}</td>
+                        <td>
+                            {% if item.product_type == 'pack_travel' %}
+                                <span class="badge" style="background:#8e44ad; color:white; padding:3px 10px; border-radius:12px;">Circuit</span>
+                            {% elif item.product_type == 'hotel' %}
+                                <span class="badge" style="background:#0f3460; color:white; padding:3px 10px; border-radius:12px;">Hôtel</span>
+                            {% else %}
+                                <span class="badge" style="background:#27ae60; color:white; padding:3px 10px; border-radius:12px;">Destination</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ item.price }} DA</td>
                         <td>{{ item.quantity }}</td>
-                        <td>{{ item.total_price }}</td>
+                        <td>{{ item.total_price }} DA</td>
+                        <td>
+                            <button class="btn btn-danger btn-sm" onclick="removeFromCart('{{ item.key }}')">🗑️ Supprimer</button>
+                        </td>
                     </tr>
-
+                    {% endfor %}
                 </tbody>
             </table>
-            <p>Total du panier : {{ cart.get_total_price }}</p>
+            <div style="text-align:right; font-size:1.4em; font-weight:700; color:#27ae60; margin-top:15px;">
+                Total du panier : {{ cart.get_total_price }} DA
+            </div>
+            {% else %}
+            <p>Votre panier est vide.</p>
+            {% endif %}
         </div>
+
+    <script>
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        function removeFromCart(productKey) {
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/cart/delete/', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.setRequestHeader('X-CSRFToken', getCookie('csrftoken'));
+
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    location.reload();
+                }
+            };
+
+            var params = 'action=post&product_key=' + encodeURIComponent(productKey);
+            xhr.send(params);
+        }
+    </script>
 {% endblock %}

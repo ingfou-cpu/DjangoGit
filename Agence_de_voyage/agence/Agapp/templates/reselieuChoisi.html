@@ -96,6 +96,33 @@
             display: inline-block; background: #0f3460; color: white;
             padding: 4px 14px; border-radius: 20px; font-size: 0.85em; margin-bottom: 10px;
         }
+        .btn-ajouter-panier {
+            width: 100%; padding: 14px;
+            background: linear-gradient(135deg, #8e44ad, #9b59b6);
+            color: white; border: none; border-radius: 8px;
+            font-size: 1.1em; font-weight: 700; cursor: pointer; margin-top: 15px;
+            transition: all 0.3s;
+        }
+        .btn-ajouter-panier:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(142,68,173,0.4); }
+        .btn-ajouter-panier:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+        .price-card {
+            background: white; border-radius: 12px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08); padding: 25px 35px; margin-bottom: 15px;
+            border-left: 5px solid #8e44ad;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .price-card .price-label { font-size: 1.1em; font-weight: 700; color: #34495e; }
+        .price-card .price-value { font-size: 1.8em; font-weight: 800; color: #8e44ad; }
+        #cart-message, #cart-message-result {
+            display: none;
+            padding: 12px 18px;
+            border-radius: 8px;
+            margin-top: 10px;
+            font-weight: 600;
+            text-align: center;
+        }
+        .cart-success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .cart-error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
     </style>
 </head>
 <body>
@@ -182,12 +209,12 @@
                 <h3>📅 Dates & Transport</h3>
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="check_in">Date d'arrivée :</label>
-                        <input type="date" id="check_in" name="check_in" required>
-                    </div>
-                    <div class="form-group">
                         <label for="check_out">Date de départ :</label>
                         <input type="date" id="check_out" name="check_out" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="check_in">Date d'arrivée :</label>
+                        <input type="date" id="check_in" name="check_in" required>
                     </div>
                 </div>
                 <div class="form-row">
@@ -220,6 +247,10 @@
                 <span id="resHotel">-</span>
             </div>
             <div class="ligne-resultat">
+                <span>Prix Destination (par personne) :</span>
+                <span id="coutDestination">0 DA</span>
+            </div>
+            <div class="ligne-resultat">
                 <span>Coût Hôtel (prix/nuit × nuits × personnes) :</span>
                 <span id="coutHotel">0 DA</span>
             </div>
@@ -242,6 +273,14 @@
             <div class="ligne-resultat total">
                 <span>💰 TOTAL TTC :</span>
                 <span id="totalTTC">0 DA</span>
+            </div>
+            <div style="background: #f8f9fa; border: 2px dashed #8e44ad; border-radius: 10px; padding: 18px; margin-top: 15px; text-align: center;">
+                <div style="font-size: 0.95em; color: #666; margin-bottom: 5px;">Coût total de la réservation</div>
+                <div style="font-size: 1.6em; font-weight: 800; color: #8e44ad; margin-bottom: 12px;" id="coutTotalPanier">0 DA</div>
+                <button type="button" class="btn-ajouter-panier" id="btnAddToCartResult" onclick="addToCartWithTotal()">
+                    🛒 Ajouter au panier — <span id="btnTotalLabel">0 DA</span>
+                </button>
+                <div id="cart-message-result"></div>
             </div>
             <button type="button" class="btn-confirmer" id="btnConfirmer" onclick="document.getElementById('reservationForm').submit()">
                 ✅ Confirmer la Réservation
@@ -289,17 +328,23 @@
             var checkIn = document.getElementById('check_in').value;
             var checkOut = document.getElementById('check_out').value;
             if (!checkIn || !checkOut) {
-                alert('Veuillez saisir les dates d\'arrivée et de départ.');
+                alert('Veuillez saisir les dates de départ et d\'arrivée.');
                 return;
             }
 
             var dateIn = new Date(checkIn);
             var dateOut = new Date(checkOut);
-            var diffTime = dateOut - dateIn;
+
+            if (dateOut >= dateIn) {
+                alert('La date de départ doit être avant la date d\'arrivée.');
+                return;
+            }
+
+            var diffTime = dateIn - dateOut;
             var nombreNuits = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
             if (nombreNuits <= 0) {
-                alert('La date de départ doit être après la date d\'arrivée.');
+                alert('Erreur dans le calcul des dates.');
                 return;
             }
 
@@ -307,15 +352,18 @@
             var nombreEnfants = parseInt(document.getElementById('nombre_enfants').value) || 0;
             var prixTransport = parseFloat(document.getElementById('transport_price').value) || 0;
 
+            var destinationPrice = parseFloat('{{ destination.price }}') || 0;
+            var coutDestination = destinationPrice * nombrePersonnes;
             var coutHotel = selectedHotelPrice * nombreNuits * nombrePersonnes;
             var coutTransport = prixTransport * (nombrePersonnes + nombreEnfants);
             var supplementEnfants = (selectedHotelPrice * nombreNuits * 0.5) * nombreEnfants;
-            var sousTotal = coutHotel + coutTransport + supplementEnfants;
+            var sousTotal = coutDestination + coutHotel + coutTransport + supplementEnfants;
             var tauxTVA = 0.19;
             var montantTVA = sousTotal * tauxTVA;
             var totalTTC = sousTotal + montantTVA;
 
             document.getElementById('resHotel').textContent = selectedHotelName + ' — ' + nombreNuits + ' nuit(s)';
+            document.getElementById('coutDestination').textContent = coutDestination.toLocaleString('fr-FR') + ' DA';
             document.getElementById('coutHotel').textContent = coutHotel.toLocaleString('fr-FR') + ' DA';
             document.getElementById('coutTransport').textContent = coutTransport.toLocaleString('fr-FR') + ' DA';
             document.getElementById('supplementEnfants').textContent = supplementEnfants.toLocaleString('fr-FR') + ' DA';
@@ -324,7 +372,74 @@
             document.getElementById('totalTTC').textContent = totalTTC.toLocaleString('fr-FR') + ' DA';
             document.getElementById('resultatSection').style.display = 'block';
             document.getElementById('btnConfirmer').style.display = 'block';
+
+            // Mettre à jour le coût total dans le bouton panier
+            document.getElementById('coutTotalPanier').textContent = totalTTC.toLocaleString('fr-FR') + ' DA';
+            document.getElementById('btnTotalLabel').textContent = totalTTC.toLocaleString('fr-FR') + ' DA';
+
             document.getElementById('resultatSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        function addToCartWithTotal() {
+            var btn = document.getElementById('btnAddToCartResult');
+            var msgDiv = document.getElementById('cart-message-result');
+            var totalText = document.getElementById('btnTotalLabel').textContent;
+
+            btn.disabled = true;
+            btn.textContent = '⏳ Ajout en cours...';
+
+            var csrfToken = getCookie('csrftoken');
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/cart/add/', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            if (csrfToken) {
+                xhr.setRequestHeader('X-CSRFToken', csrfToken);
+            }
+
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4) {
+                    btn.disabled = false;
+                    btn.innerHTML = '🛒 Ajouter au panier — <span id="btnTotalLabel">' + totalText + '</span>';
+                    msgDiv.style.display = 'block';
+
+                    if (xhr.status === 200) {
+                        try {
+                            var response = JSON.parse(xhr.responseText);
+                            msgDiv.className = 'cart-success';
+                            msgDiv.innerHTML = '✅ "' + response.product_name + '" ajouté au panier pour ' + totalText + ' ! (Quantité: ' + response.quantity + ')';
+                        } catch(e) {
+                            msgDiv.className = 'cart-success';
+                            msgDiv.innerHTML = '✅ La réservation a été ajoutée au panier pour ' + totalText + ' !';
+                        }
+                    } else {
+                        msgDiv.className = 'cart-error';
+                        msgDiv.innerHTML = '❌ Erreur (status: ' + xhr.status + '). Vérifiez la console.';
+                    }
+
+                    setTimeout(function() {
+                        msgDiv.style.display = 'none';
+                    }, 5000);
+                }
+            };
+
+            var params = 'action=post&product_type=destination&product_id={{ destination.id }}&quantity=1';
+            xhr.send(params);
         }
     </script>
 </body>
