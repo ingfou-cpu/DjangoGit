@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Profil - Boutique</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .profile-card {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        
+        .profile-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .profile-header h1 {
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .profile-header p {
+            color: #666;
+        }
+        
+        .avatar {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: white;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .form-group input:disabled {
+            background: #f5f5f5;
+            color: #666;
+        }
+        
+        .email-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 8px;
+            font-size: 0.9rem;
+        }
+        
+        .email-status.valid {
+            color: #28a745;
+        }
+        
+        .email-status.invalid {
+            color: #dc3545;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            width: 100%;
+        }
+        
+        .btn-primary:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+            margin-top: 15px;
+            width: 100%;
+            text-align: center;
+        }
+        
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+        
+        .messages {
+            margin-bottom: 25px;
+        }
+        
+        .message {
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        
+        .message.error {
+            background: #fee;
+            color: #c33;
+            border-left: 4px solid #c33;
+        }
+        
+        .message.success {
+            background: #efe;
+            color: #3c3;
+            border-left: 4px solid #3c3;
+        }
+        
+        .message.info {
+            background: #eef;
+            color: #33c;
+            border-left: 4px solid #33c;
+        }
+        
+        .info-box {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 25px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .info-box p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .info-box strong {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="profile-card">
+            <div class="profile-header">
+                <div class="avatar">{{ user.username|first|upper }}</div>
+                <h1>Mon Profil</h1>
+                <p>Gérez vos informations personnelles</p>
+            </div>
+            
+            {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                <div class="message {{ message.tags }}">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            
+            <div class="info-box">
+                <p>📧 <strong>Important :</strong> Une adresse email valide est requise pour recevoir les confirmations de paiement et les reçus de vos achats.</p>
+            </div>
+            
+            <form method="post">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <label for="username">Nom d'utilisateur</label>
+                    <input type="text" id="username" value="{{ user.username }}" disabled>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Adresse email</label>
+                    <input type="email" id="email" name="email" value="{{ user.email }}" required placeholder="votre@email.com">
+                    
+                    {% if user.email %}
+                        {% if email_valid %}
+                        <div class="email-status valid">
+                            ✅ Adresse email valide
+                        </div>
+                        {% else %}
+                        <div class="email-status invalid">
+                            ⚠️ Adresse email invalide - Veuillez la corriger
+                        </div>
+                        {% endif %}
+                    {% else %}
+                    <div class="email-status invalid">
+                        ⚠️ Aucune adresse email configurée
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group">
+                    <label>Date d'inscription</label>
+                    <input type="text" value="{{ user.date_joined|date:'d/m/Y H:i' }}" disabled>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">
+                    💾 Enregistrer les modifications
+                </button>
+            </form>
+            
+            <a href="{% url 'home' %}" class="btn btn-secondary">
+                ← Retour à la boutique
+            </a>
+        </div>
+    </div>
+</body>
+</html>

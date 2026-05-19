@@ -1,0 +1,250 @@
+<!-- templates/cancel.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Cancelled</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .cancel-container {
+            background: white;
+            max-width: 500px;
+            width: 90%;
+            padding: 60px 40px;
+            border-radius: 12px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            text-align: center;
+            animation: slideIn 0.5s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .cancel-icon {
+            font-size: 80px;
+            color: #ff6b6b;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            color: #333;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+        
+        .reason-text {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 30px 0;
+            border-left: 4px solid #ff6b6b;
+        }
+        
+        .reason-text p {
+            margin-bottom: 10px;
+            color: #555;
+        }
+        
+        .buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 40px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 6px;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: #667eea;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            border: 2px solid #667eea;
+            border-radius: 6px;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+        
+        .btn-secondary:hover {
+            background: #667eea;
+            color: white;
+        }
+        
+        .btn-outline {
+            background: transparent;
+            color: #ff6b6b;
+            padding: 12px 25px;
+            font-size: 1rem;
+            border: 2px solid #ff6b6b;
+            border-radius: 6px;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-outline:hover {
+            background: #ff6b6b;
+            color: white;
+        }
+        
+        .help-section {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid #eee;
+        }
+        
+        .help-section h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        
+        .help-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .help-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        
+        .help-link:hover {
+            color: #764ba2;
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 768px) {
+            .cancel-container {
+                padding: 40px 20px;
+                margin: 20px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn-primary,
+            .btn-secondary {
+                width: 100%;
+                max-width: 250px;
+            }
+            
+            .help-links {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="cancel-container">
+        <div class="cancel-icon">❌</div>
+        
+        <h1>Payment Cancelled</h1>
+        
+        <p class="subtitle">
+            Your payment has been cancelled and no charges were made to your account.
+        </p>
+        
+        <div class="reason-text">
+            <p><strong>What happened?</strong></p>
+            <p>You chose to cancel the payment process or closed the payment window before completing the transaction.</p>
+        </div>
+        
+        <div class="buttons">
+            <a href="/checkout" class="btn-primary">Try Again</a>
+            <a href="/" class="btn-secondary">Return Home</a>
+        </div>
+        
+        <div class="help-section">
+            <h3>Need Help?</h3>
+            <div class="help-links">
+                <a href="/contact" class="help-link">Contact Support</a>
+                <a href="/faq" class="help-link">FAQ</a>
+                <a href="/pricing" class="help-link">View Plans</a>
+            </div>
+        </div>
+        
+        <!-- Optional: Add session restoration if you have cart data -->
+        <script>
+            // Optional: Clear any temporary payment data
+            if (typeof sessionStorage !== 'undefined') {
+                sessionStorage.removeItem('checkout_session_id');
+            }
+            
+            // Optional: Track cancellation for analytics
+            console.log('Payment cancelled - user returned to cancel page');
+        </script>
+    </div>
+</body>
+</html>
