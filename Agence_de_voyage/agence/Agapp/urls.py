@@ -9,4 +9,13 @@ urlpatterns = [
     path('reselieuChoisi/<int:destination_id>/', views.reselieuChoisi, name='reselieuChoisi'),
     path('circuitChoisi/<int:pack_travel_id>/', views.circuitChoisi, name='circuitChoisi'),
     path('reservCroisiere/<int:pack_travel_id>/', views.reservCroisiere, name='reservCroisiere'),
+
+    # Paiement Stripe
+    path('payment/', views.payment_home, name='payment_home'),
+    path('payment/checkout/destination/<int:destination_id>/', views.create_checkout_destination, name='checkout_destination'),
+    path('payment/checkout/pack/<int:pack_id>/', views.create_checkout_pack, name='checkout_pack'),
+    path('payment/success/', views.payment_success, name='payment_success'),
+    path('payment/cancel/', views.payment_cancel, name='payment_cancel'),
+    path('payment/webhook/', views.stripe_webhook, name='stripe_webhook'),
+    path('history/', views.payment_history, name='payment_history'),
 ]

@@ -58,15 +58,6 @@
             font-size: 1.1em; font-weight: 700; cursor: pointer; margin-top: 15px;
         }
         .btn-confirmer:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(39,174,96,0.4); }
-        .btn-ajouter-panier {
-            width: 100%; padding: 14px;
-            background: linear-gradient(135deg, #8e44ad, #9b59b6);
-            color: white; border: none; border-radius: 8px;
-            font-size: 1.1em; font-weight: 700; cursor: pointer; margin-top: 15px;
-            transition: all 0.3s;
-        }
-        .btn-ajouter-panier:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(142,68,173,0.4); }
-        .btn-ajouter-panier:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
         .alert-confirmation {
             padding: 15px 20px; border-radius: 8px; margin-bottom: 20px;
             font-weight: 600; font-size: 1.05em;
@@ -112,16 +103,6 @@
         }
         .price-card .price-label { font-size: 1.1em; font-weight: 700; color: #34495e; }
         .price-card .price-value { font-size: 1.8em; font-weight: 800; color: #8e44ad; }
-        #cart-message {
-            display: none;
-            padding: 12px 18px;
-            border-radius: 8px;
-            margin-top: 10px;
-            font-weight: 600;
-            text-align: center;
-        }
-        .cart-success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
-        .cart-error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
     </style>
 </head>
 <body>
@@ -154,7 +135,7 @@
 
     <div class="container-form">
 
-        <!-- Prix et bouton Ajouter au panier -->
+        <!-- Prix du circuit -->
         <div class="price-card">
             <div>
                 <div class="price-label">Prix du circuit</div>
@@ -163,15 +144,6 @@
             <div class="price-value">{{ pack_travels.price }} DA</div>
         </div>
 
-        <!-- Formulaire Ajouter au panier avec CSRF -->
-        <form id="cartForm" style="display: none;">
-            {% csrf_token %}
-        </form>
-        <button type="button" class="btn-ajouter-panier" id="btnAddToCart" onclick="addToCart()">
-            🛒 Ajouter ce circuit au panier
-        </button>
-        <div id="cart-message"></div>
-        
         <!-- Formulaire de réservation -->
         <form id="reservationForm" method="POST" action="{% url 'circuitChoisi' pack_travels.id %}">
             {% csrf_token %}
@@ -222,72 +194,5 @@
         </form>
 
     </div>
-
-    <script>
-        function getCookie(name) {
-            var cookieValue = null;
-            if (document.cookie && document.cookie !== '') {
-                var cookies = document.cookie.split(';');
-                for (var i = 0; i < cookies.length; i++) {
-                    var cookie = cookies[i].trim();
-                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                        break;
-                    }
-                }
-            }
-            return cookieValue;
-        }
-
-        function addToCart() {
-            var btn = document.getElementById('btnAddToCart');
-            var msgDiv = document.getElementById('cart-message');
-            
-            btn.disabled = true;
-            btn.textContent = '⏳ Ajout en cours...';
-
-            var csrfToken = getCookie('csrftoken');
-            console.log('CSRF Token:', csrfToken);
-
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', '/cart/add/', true);
-            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            if (csrfToken) {
-                xhr.setRequestHeader('X-CSRFToken', csrfToken);
-            }
-
-            xhr.onreadystatechange = function() {
-                console.log('XHR readyState:', xhr.readyState, 'status:', xhr.status);
-                if (xhr.readyState === 4) {
-                    btn.disabled = false;
-                    btn.textContent = '🛒 Ajouter ce circuit au panier';
-                    msgDiv.style.display = 'block';
-                    console.log('Response:', xhr.responseText);
-
-                    if (xhr.status === 200) {
-                        try {
-                            var response = JSON.parse(xhr.responseText);
-                            msgDiv.className = 'cart-success';
-                            msgDiv.innerHTML = '✅ "' + response.product_name + '" ajouté au panier ! (Quantité: ' + response.quantity + ')';
-                        } catch(e) {
-                            msgDiv.className = 'cart-success';
-                            msgDiv.innerHTML = '✅ Le circuit a été ajouté au panier !';
-                        }
-                    } else {
-                        msgDiv.className = 'cart-error';
-                        msgDiv.innerHTML = '❌ Erreur (status: ' + xhr.status + '). Vérifiez la console.';
-                    }
-
-                    setTimeout(function() {
-                        msgDiv.style.display = 'none';
-                    }, 5000);
-                }
-            };
-
-            var params = 'action=post&product_type=pack_travel&product_id={{ pack_travels.id }}&quantity=1';
-            console.log('Sending:', params);
-            xhr.send(params);
-        }
-    </script>
 
 {% endblock %}

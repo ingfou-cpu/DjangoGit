@@ -56,27 +56,6 @@
                         <i class="fas fa-check-circle me-2"></i>Choisir cette destination ID: {{ Destinations.id }}
                     </a>
                 </div>
-                <script>
-                    // check if the button is clicked
-                    $(document).on('click', '#add_cart', function(e){
-                        e.preventDefault(); 
-                        $.ajax({
-                            type: "POST",
-                            url: "{% url 'add_cart' %}",
-                            data: {
-                                'destination_id': $('#add_cart').val(),
-                                csrfmiddlewaretoken: '{{csrf_token}}',
-                                action: 'post'
-                            },
-                            success: function(json) {
-                                console.log(json)
-                            },
-                            error: function(xhr, errmsg, err) {
-                                console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
-                            }
-                        });
-                    });
-                </script>
                 {% endfor %}
 
             </div>

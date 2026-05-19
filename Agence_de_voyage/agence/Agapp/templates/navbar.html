@@ -17,21 +17,9 @@
                 <li class="nav-item"><a class="nav-link" href="{% url 'home' %}#projects">Offres de voyage</a></li>
                 <li class="nav-item"><a class="nav-link" href="{% url 'contact' %}">Contact</a></li>
                 <li class="nav-item"><a class="nav-link" href="{% url 'circuit' %}">Circuit Touristique</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'payment_home' %}">Payments</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'payment_history' %}">Historique des paiements</a></li>
              
-                <!-- Icône de panier améliorée -->
-                <div class="cart-icon-container">
-
-                </div>
-                
-                <form class="d-flex">
-                    <a href="{% url 'cart_summary' %}" class="btn btn-cart btn-outline-dark">
-                        <i class="bi bi-cart-fill me-1"></i>
-                        <span class="btn-text">Cart</span>
-                        {% with total_items=cart|length %}
-                        <span class="badge bg-dark text-white ms-1 rounded-pill cart-badge">{{ total_items }}</span>
-                        {% endwith %}
-                    </a>
-                </form>
             </ul>
         </div>
     </div>

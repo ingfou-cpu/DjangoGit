@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 #-------------------Destinations ----------------------------------------------------------#
@@ -99,6 +100,47 @@ class Testimonial(models.Model): # Testimonial = Avis = témoignage
     created_at = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
-        return f"Testimonial by {self.customer_name} for {self.destination.name}"  
+        return f"Testimonial by {self.customer_name} for {self.destination.name}"
+
+
+#-------------------Paiement Stripe-------------------------------------------------------#
+class PaymentRecord(models.Model):
+    """Enregistrement des paiements Stripe"""
+    PAYMENT_STATUS_CHOICES = [
+        ('pending', 'En attente'),
+        ('completed', 'Complété'),
+        ('failed', 'Échoué'),
+        ('refunded', 'Remboursé'),
+        ('expired', 'Expiré'),
+    ]
+
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    booking = models.ForeignKey(Booking, on_delete=models.SET_NULL, null=True, blank=True, related_name='payments')
+    reser_circuit = models.ForeignKey(reser_circuit, on_delete=models.SET_NULL, null=True, blank=True, related_name='payments')
+    destination = models.ForeignKey(Destination, on_delete=models.SET_NULL, null=True, blank=True)
+    pack = models.ForeignKey(pack_travel, on_delete=models.SET_NULL, null=True, blank=True)
+
+    stripe_checkout_session_id = models.CharField(max_length=255, unique=True, blank=True, null=True)
+    stripe_payment_intent_id = models.CharField(max_length=255, blank=True, null=True)
+    stripe_customer_id = models.CharField(max_length=255, blank=True, null=True)
+
+    amount = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    currency = models.CharField(max_length=3, default='eur')
+    status = models.CharField(max_length=20, choices=PAYMENT_STATUS_CHOICES, default='pending')
+
+    customer_name = models.CharField(max_length=100, blank=True, default='')
+    customer_email = models.EmailField(blank=True, default='')
+    customer_phone = models.CharField(max_length=20, blank=True, default='')
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name = "Paiement"
+        verbose_name_plural = "Paiements"
+
+    def __str__(self):
+        return f"Paiement {self.stripe_checkout_session_id or 'N/A'} - {self.amount}€ ({self.status})"  
         
 
