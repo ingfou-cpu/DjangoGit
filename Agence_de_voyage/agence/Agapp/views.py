@@ -459,3 +459,9 @@ def payment_history(request):
     """Historique des paiements"""
     payments = PaymentRecord.objects.all().order_by('-created_at')
     return render(request, 'payment_history.html', {'payments': payments})
+
+def temoignage(request):
+    testimonials = Testimonial.objects.all()
+    destinations = Destination.objects.all()
+    bookings = Booking.objects.all()
+    return render(request, 'temoignage.html',{'Testimonial': testimonials, 'Destination': destinations,'Booking': bookings})

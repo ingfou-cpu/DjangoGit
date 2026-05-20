@@ -9,6 +9,7 @@ urlpatterns = [
     path('reselieuChoisi/<int:destination_id>/', views.reselieuChoisi, name='reselieuChoisi'),
     path('circuitChoisi/<int:pack_travel_id>/', views.circuitChoisi, name='circuitChoisi'),
     path('reservCroisiere/<int:pack_travel_id>/', views.reservCroisiere, name='reservCroisiere'),
+    path('temoignage/', views.temoignage, name='temoignage'),
 
     # Paiement Stripe
     path('payment/', views.payment_home, name='payment_home'),

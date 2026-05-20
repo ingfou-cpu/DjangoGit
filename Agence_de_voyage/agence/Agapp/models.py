@@ -40,7 +40,8 @@ class Booking(models.Model): # Booking = Réservation
     class Meta:
         ordering = ['-check_in_date']  # Order by booking date descending
     def __str__(self):
-        return f"Booking for Mr {self.customer_name} to {self.destination.name}"   
+        return f"Booking for Mr {self.customer_name} to {self.destination.name}"  
+        
 
 """class Reservation(models.Model):
     hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE)

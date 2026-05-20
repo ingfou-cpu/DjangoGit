@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %} 
+<br><br><br><br><br>
+
+
+
+<section class="projects-section bg-light" id="projects">
+            <div class="container px-4 px-lg-5">
+                 <!-- Featured Project Row-->
+                 <h1><center><b><em> Avis de voyage </em></b> </center></h1>
+                <!-- {{ Destination }}-->
+                {% for testimonials in Testimonial %} 
+                <div class="row gx-0 mb-4 mb-lg-5 align-items-center">
+
+                    {% if forloop.counter|divisibleby:2 %}
+                        <!-- Pair : Texte à gauche, Image à droite -->
+                        <div class="col-xl-4 col-lg-5">
+                            <div class="featured-text text-center text-lg-left">
+                                <h4>{{testimonials.destination}}</h4>
+                                <p>Note : {{ testimonials.rating }}/5</p>
+                                <p>Note : {{ testimonials.customer_name }}</p>
+                                <p class="text-black-50 mb-0">Comment: {{testimonials.comment}}</p>
+                            </div>
+                        </div>
+                        <div class="col-xl-8 col-lg-7"><img class="img-fluid" src="{{testimonials.destination.image.url}}" alt="..." /></div>
+
+                    {% else %}
+                        <!-- Impair : Image à gauche, Texte à droite -->
+                        <div class="col-xl-8 col-lg-7"><img class="img-fluid" src="{{testimonials.destination.image.url}}" alt="..." /></div>
+                        <div class="col-xl-4 col-lg-5">
+                            <div class="featured-text text-center text-lg-left">
+                                <h4>{{testimonials.destination}}</h4>
+                                <p>Note : {{ testimonials.rating }}/5</p>
+                                <p>Note : {{ testimonials.customer_name }} </p>
+
+                                <p class="text-black-50 mb-0">Comment: {{testimonials.comment}}</p>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+{% endfor %}
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+{% endblock %}   
