@@ -8,22 +8,87 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from django.contrib import messages
 import stripe
-import json
+from django.contrib.messages.views import SuccessMessageMixin
 import logging
+from django.views.generic.list import ListView 
+from django.views.generic.detail import DetailView
+from django.views.generic.edit import CreateView
+from django.urls import reverse_lazy
 
 logger = logging.getLogger(__name__)
 
-# Create your views here.
+# Create your views here.-
 
 
-def home(request):
+"""def home(request):
     #bookings = Booking.objects.all()
     pack_travels = pack_travel.objects.all()
     Destinations = Destination.objects.all()
     return render(request, 'home.html', {'pack_travel': pack_travels, 'Destination': Destinations})
+"""
+class HomeView(ListView):
+    model = Destination
+    paginate_by = 2 # Nombre d'éléments par page
+    template_name = 'home.html'
+    context_object_name = 'Destination'#Avec ListView et model = Destination, Django crée automatiquement la variable object_list (et non Destination).
+    extra_context = {'pack_travels': pack_travel.objects.all()}
+    extra_context = {'hotels': Hotel.objects.all()}
+    extra_context = {'bookings': Booking.objects.all()}
+    extra_context = {'testimonials': Testimonial.objects.all()}
+    
+"""    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['pack_travels'] = pack_travel.objects.all()
+        context['hotels'] = Hotel.objects.all()
+        context['bookings'] = Booking.objects.all()
+        context['testimonials'] = Testimonial.objects.all()
+        return context"""
 
+class contactcreteview(SuccessMessageMixin, CreateView):
+    model = Contact
+    form_class = ContactForm
+    template_name = 'contact.html'
+    success_url = reverse_lazy('contact') # redirige vers la même page après soumission du formulaire
+    success_message = "✅ Votre message a été envoyé avec succès !"
+    
+"""def contact(request):
+    submitted = False
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('contact') + '?submitted=True')
+    else:
+        form = ContactForm
+        if 'submitted' in request.GET:
+            submitted = True
+    return render(request, 'contact.html', {'form': form, 'submitted': submitted})"""
 
-def reservation(request):
+class temoignageView(CreateView):
+    model = Testimonial
+    template_name = 'testimonial_form.html' # On peut aussi utiliser 'temoignage.html' à la place de 'testimonial_form.html' pour afficher les témoignages dans une page dédiée
+    fields = ['customer_name', 'destination', 'rating', 'comment']
+    context_object_name = 'Testimonial'
+    
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(self.request, "Le livre a été créé avec succès.")
+        return response
+    success_url = reverse_lazy('temoignage') # redirige vers la page de témoignages après soumission du formulaire
+
+"""def temoignage(request):
+    testimonials = Testimonial.objects.all()
+    destinations = Destination.objects.all()
+    bookings = Booking.objects.all()
+    return render(request, 'temoignage.html',{'Testimonial': testimonials, 'Destination': destinations,'Booking': bookings})
+"""
+class temoignageView(ListView):
+    model = Testimonial
+    paginate_by = 2 # Nombre d'éléments par page
+    template_name = 'temoignage.html'
+    context_object_name = 'Testimonial'#Avec ListView et model = Testimonial, Django crée automatiquement la variable object_list (et non Testimonial).
+
+def reservation(request):   
     Hotels = Hotel.objects.all()
     Destinations = Destination.objects.all()
     customer_name = ''
@@ -146,21 +211,6 @@ def reservCroisiere(request, pack_travel_id):
         'confirmation_message': confirmation_message,
         'show_confirmation': show_confirmation
     })
-
-
-def contact(request):
-    submitted = False
-    if request.method == 'POST':
-        form = ContactForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse('contact') + '?submitted=True')
-    else:
-        form = ContactForm
-        if 'submitted' in request.GET:
-            submitted = True
-    return render(request, 'contact.html', {'form': form, 'submitted': submitted})
-
 
 def about(request):
     return render(request, 'about.html', {})
@@ -460,8 +510,3 @@ def payment_history(request):
     payments = PaymentRecord.objects.all().order_by('-created_at')
     return render(request, 'payment_history.html', {'payments': payments})
 
-def temoignage(request):
-    testimonials = Testimonial.objects.all()
-    destinations = Destination.objects.all()
-    bookings = Booking.objects.all()
-    return render(request, 'temoignage.html',{'Testimonial': testimonials, 'Destination': destinations,'Booking': bookings})

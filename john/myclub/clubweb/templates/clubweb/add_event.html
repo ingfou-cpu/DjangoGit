@@ -2,26 +2,111 @@
 
 {% block content %}
 {% if user.is_authenticated %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-primary text-white py-3">
+                    <h1 class="h4 mb-0">
+                        <i class="fas fa-calendar-plus me-2"></i>Ajouter un Événement
+                    </h1>
+                </div>
+                <div class="card-body p-4">
+                    {% if submitted %}
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <i class="fas fa-check-circle me-2"></i>
+                            Événement ajouté avec succès!
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endif %}
 
-	<h1>Ajouter un Evenement</h1>
-    <br></br>
-    {% if submitted %}
-        <div class="alert alert-success" role="alert">
-            Evenement ajouté avec succès!
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                <i class="fas fa-info-circle me-2"></i>
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <form method="post" novalidate>
+                        {% csrf_token %}
+
+                        {% if form.non_field_errors %}
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <i class="fas fa-exclamation-triangle me-2"></i>
+                                {{ form.non_field_errors }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% endif %}
+
+                        {% for field in form %}
+                            <div class="mb-3">
+                                <label for="{{ field.id_for_label }}" class="form-label fw-bold text-dark">
+                                    {{ field.label }}{% if field.field.required %} <span class="text-danger">*</span>{% endif %}
+                                </label>
+                                <div class="input-group">
+                                    {{ field }}
+                                </div>
+                                {% if field.help_text %}
+                                    <div class="form-text text-muted small mt-1">
+                                        <i class="fas fa-info-circle me-1"></i>
+                                        {{ field.help_text }}
+                                    </div>
+                                {% endif %}
+                                {% if field.errors %}
+                                    <div class="text-danger small mt-1">
+                                        <i class="fas fa-exclamation-circle me-1"></i>
+                                        {{ field.errors|striptags }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+
+                        <div class="d-flex justify-content-between align-items-center mt-4 pt-3 border-top">
+                            <div>
+                                <button type="submit" class="btn btn-primary btn-lg px-4">
+                                    <i class="fas fa-save me-2"></i>Enregistrer l'Événement
+                                </button>
+                                <a href="{% url 'clubweb:event_list' %}" class="btn btn-outline-secondary btn-lg ms-2">
+                                    <i class="fas fa-times me-2"></i>Annuler
+                                </a>
+                            </div>
+                            <div class="text-muted small">
+                                <i class="fas fa-keyboard me-1"></i>
+                                Tous les champs marqués d'un <span class="text-danger">*</span> sont obligatoires
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-        {% else %}
-            <form method="POST" class="mb-4">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <button type="submit" class="btn btn-primary">Ajouter l'Evenement</button>
-            </form>
-        {% endif %}
+    </div>
+</div>
 
 {% else %}
-    <div class="alert alert-warning" role="alert">
-        Vous devez être connecté pour ajouter un événement.
-        <a class="nav-link" href="{% url 'authen:login' %}">Login Here</a>
-
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card border-warning shadow-sm">
+                    <div class="card-header bg-warning text-dark">
+                        <h3 class="h4 mb-0">
+                            <i class="fas fa-lock me-2"></i>Accès Refusé
+                        </h3>
+                    </div>
+                    <div class="card-body text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-user-lock fa-3x text-warning mb-3"></i>
+                        </div>
+                        <p class="lead mb-4">Vous devez être connecté pour ajouter un événement.</p>
+                        <a href="{% url 'authen:login' %}" class="btn btn-warning btn-lg">
+                            <i class="fas fa-sign-in-alt me-2"></i>Se connecter
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 {% endif %}
 {% endblock %}

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}My Wishlist{% endblock %}
+
+{% block content %}
+<h2>My Wishlist</h2>
+<div class="row row-cols-1 row-cols-md-4 g-4 mt-2">
+    {% for product in wishlist.products.all %}
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+                {% if product.image %}
+                    <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+                {% else %}
+                    <div class="bg-secondary text-white d-flex align-items-center justify-content-center" style="height: 150px;">No Image</div>
+                {% endif %}
+                <div class="card-body text-center">
+                    <h5 class="card-title">{{ product.name }}</h5>
+                    <p class="card-text">${{ product.price }}</p>
+                    <a href="{{ product.get_absolute_url }}" class="btn btn-primary btn-sm">View Product</a>
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <div class="col-12">
+            <p>Your wishlist is empty. <a href="{% url 'products:product_list' %}">Explore products</a></p>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

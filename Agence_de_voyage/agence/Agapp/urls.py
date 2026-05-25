@@ -1,15 +1,27 @@
 from django.urls import path, include
 from . import views
+from .views import contactcreteview, HomeView, temoignageView
 
 urlpatterns = [
-    path('', views.home, name='home'),
-    path('about/', views.about, name='about'),
-    path('contact/', views.contact, name='contact'),
+    #path('', views.home, name='home'),
+
+    path ('',HomeView.as_view(), name='home'),# variante HomeView de home 
+
+    path('about/', views.about, name='about'), 
+
+    #path('contact/', views.contact, name='contact'),
+    path('contact/', contactcreteview.as_view(), name='contact'),# variante creteview de contact
+    
+
+    #path('temoignage/', views.temoignage, name='temoignage'),
+    path('temoignage/', temoignageView.as_view(), name='temoignage'),# variante HomeView de home 
+
+    path('temoignage_form/', temoignageView.as_view(), name='testimonial_form'),# variante creteview de contact
     path('circuit/', views.circuit, name='circuit'),
     path('reselieuChoisi/<int:destination_id>/', views.reselieuChoisi, name='reselieuChoisi'),
     path('circuitChoisi/<int:pack_travel_id>/', views.circuitChoisi, name='circuitChoisi'),
     path('reservCroisiere/<int:pack_travel_id>/', views.reservCroisiere, name='reservCroisiere'),
-    path('temoignage/', views.temoignage, name='temoignage'),
+    
 
     # Paiement Stripe
     path('payment/', views.payment_home, name='payment_home'),

@@ -59,6 +59,21 @@
                 {% endfor %}
 
             </div>
+
+            <div class="container px-4 px-lg-5 d-flex justify-content-center">
+                
+                {% if page_obj.has_previous %}
+                    <a href="?page=1"> First -&nbsp; </a><br><br> 
+                    <a href="?page={{ page_obj.previous_page_number }}"> Previous </a>
+                {% endif %}
+                    &nbsp;&nbsp;&nbsp;
+                <span>  Page {{ page_obj.number }} of&nbsp;{{ page_obj.paginator.num_pages }}  </span>
+                    &nbsp;&nbsp;&nbsp;
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}"> Next -&nbsp; </a><br><br> 
+                    <a href="?page={{ page_obj.paginator.num_pages }}"> Last </a>
+                {% endif %}
+            </div>   
         </section>
         <!-- Signup-->
 

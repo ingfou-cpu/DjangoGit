@@ -34,10 +34,10 @@ class Booking(models.Model): # Booking = Réservation
     phone_number = models.CharField(max_length=20, blank=True, null=True, default='')  
     check_out_date = models.DateTimeField(blank=True, null=True)
     means_of_transport = models.CharField(max_length=100, blank=True, null=True,choices=[('avion', 'Avion'), ('train', 'Train'), ('bus', 'Bus'), ('voiture', 'Voiture de location')])  # choices=[('avion', 'Avion'), ('train', 'Train'), ('bus', 'Bus'), ('voiture', 'Voiture de location')])
-    def is_available(self):
-        # Check if the hotel is available for booking
-        return self.hotel.status == True
+
     class Meta:
+        verbose_name = 'Réservation'  # Nom au singulier dans l'interface d'administration
+        verbose_name_plural = 'Réservations'  # Nom au pluriel dans l'interface d'administration
         ordering = ['-check_in_date']  # Order by booking date descending
     def __str__(self):
         return f"Booking for Mr {self.customer_name} to {self.destination.name}"  
@@ -91,7 +91,7 @@ class Contact(models.Model):
     sent_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Adresse: {self.name} - Email: {self.email} - Phone: {self.phone} - Message: {self.message[:50]}..."  # Affiche les 50 premiers caractères du message
+        return f"Contact: {self.name} - Email: {self.email} - Phone: {self.phone} - Message: {self.message[:50]}..."  # Affiche les 50 premiers caractères du message
 #------------------- testimonials-------------------------------------------------------#
 class Testimonial(models.Model): # Testimonial = Avis = témoignage
     customer_name = models.ForeignKey(Booking, on_delete=models.CASCADE)
