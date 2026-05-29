@@ -64,7 +64,7 @@ class contactcreteview(SuccessMessageMixin, CreateView):
             submitted = True
     return render(request, 'contact.html', {'form': form, 'submitted': submitted})"""
 
-class temoignageView(CreateView):
+class temoignageViewV(CreateView):
     model = Testimonial
     template_name = 'testimonial_form.html' # On peut aussi utiliser 'temoignage.html' à la place de 'testimonial_form.html' pour afficher les témoignages dans une page dédiée
     fields = ['customer_name', 'destination', 'rating', 'comment']

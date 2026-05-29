@@ -1,6 +1,6 @@
 from django.urls import path, include
 from . import views
-from .views import contactcreteview, HomeView, temoignageView
+from .views import contactcreteview, HomeView, temoignageView, temoignageViewV
 
 urlpatterns = [
     #path('', views.home, name='home'),
@@ -14,9 +14,9 @@ urlpatterns = [
     
 
     #path('temoignage/', views.temoignage, name='temoignage'),
-    path('temoignage/', temoignageView.as_view(), name='temoignage'),# variante HomeView de home 
+    path('temoignage/', temoignageViewV.as_view(), name='temoignage'),# variante HomeView de home 
 
-    path('temoignage_form/', temoignageView.as_view(), name='testimonial_form'),# variante creteview de contact
+    path('testimonial_form/', temoignageView.as_view(), name='testimonial_form'),# variante creteview de contact
     path('circuit/', views.circuit, name='circuit'),
     path('reselieuChoisi/<int:destination_id>/', views.reselieuChoisi, name='reselieuChoisi'),
     path('circuitChoisi/<int:pack_travel_id>/', views.circuitChoisi, name='circuitChoisi'),
