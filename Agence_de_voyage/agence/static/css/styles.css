@@ -11404,3 +11404,132 @@ form {
   }
 }
 
+  /*
+     ============================================
+     Carousel - Images cliquables & Défilement fluide
+     ============================================ */
+  .carousel {
+      max-width: 900px;
+      margin: 0 auto;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  }
+  
+  .carousel-inner {
+      max-height: 450px;
+  }
+  
+  .carousel-item {
+      transition: transform 0.6s ease-in-out, opacity 0.6s ease-in-out;
+  }
+  
+  .carousel-img-clickable {
+      cursor: pointer;
+      width: 100%;
+      height: 450px;
+      object-fit: cover;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+  
+  .carousel-img-clickable:hover {
+      transform: scale(1.02);
+      opacity: 0.9;
+  }
+  
+  .carousel-item a {
+      display: block;
+  }
+  
+  .carousel-caption {
+      background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 50%, transparent 100%);
+      border-radius: 0 0 12px 12px;
+      padding: 20px 15px 15px;
+      bottom: 0;
+      left: 0;
+      right: 0;
+  }
+  
+  .carousel-caption h5 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+  }
+  
+  .carousel-caption p {
+      font-size: 0.95rem;
+      margin-bottom: 0;
+  }
+  
+  /* Contrôles du carousel */
+  .carousel-control-prev,
+  .carousel-control-next {
+      width: 8%;
+      opacity: 0.7;
+      transition: opacity 0.3s ease;
+  }
+  
+  .carousel-control-prev:hover,
+  .carousel-control-next:hover {
+      opacity: 1;
+  }
+  
+  /* Indicateurs du carousel */
+  .carousel-indicators {
+      bottom: 15px;
+  }
+  
+  .carousel-indicators [data-bs-target] {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      margin: 0 5px;
+      background-color: rgba(255,255,255,0.5);
+      border: 2px solid rgba(255,255,255,0.8);
+      transition: all 0.3s ease;
+  }
+  
+  .carousel-indicators .active {
+      background-color: #fff;
+      transform: scale(1.2);
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+      .carousel {
+          max-width: 100%;
+          border-radius: 0;
+      }
+      
+      .carousel-inner,
+      .carousel-img-clickable {
+          height: 300px;
+      }
+      
+      .carousel-caption h5 {
+          font-size: 1.2rem;
+      }
+      
+      .carousel-caption p {
+          font-size: 0.85rem;
+      }
+  }
+  
+  @media (max-width: 480px) {
+      .carousel-inner,
+      .carousel-img-clickable {
+          height: 220px;
+      }
+      
+      .carousel-caption {
+          padding: 10px;
+      }
+      
+      .carousel-caption h5 {
+          font-size: 1rem;
+      }
+      
+      .carousel-caption p {
+          display: none;
+      }
+  }

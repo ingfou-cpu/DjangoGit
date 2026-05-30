@@ -49,8 +49,37 @@ window.addEventListener('DOMContentLoaded', event => {
                 navbarToggler.click();
             }
         });
+    
+        // ============================================
+        // Carousel - Défilement automatique toutes les 3 secondes en boucle
+        // ============================================
+        var carousel = document.getElementById('carouselExampleCaptions');
+        
+        if (carousel) {
+            // Initialiser le carousel avec les options
+            var carouselInstance = new bootstrap.Carousel(carousel, {
+                interval: 3000,
+                wrap: true,
+                ride: 'carousel',
+                pause: false
+            });
+    
+            // Événement après chaque transition de slide
+            carousel.addEventListener('slid.bs.carousel', function() {
+                var items = carousel.querySelectorAll('.carousel-item');
+                var lastItem = items[items.length - 1];
+                var activeItem = carousel.querySelector('.carousel-item.active');
+    
+                // Si on est à la dernière slide, forcer le retour au début
+                if (activeItem === lastItem) {
+                    setTimeout(function() {
+                        carouselInstance.to(0);
+                    }, 3000);
+                }
+            });
+        }
+    
     });
-
     // Toggle Developer button text on collapse show/hide
     document.querySelectorAll('[id^="btn-dev-"]').forEach(function(btn) {
         var targetId = btn.getAttribute('data-bs-target');

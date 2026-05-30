@@ -1,3 +1,4 @@
+
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Destination, Booking, Contact, Testimonial, pack_travel, Hotel, reser_circuit, PaymentRecord
 from .forms import ContactForm
@@ -28,13 +29,11 @@ logger = logging.getLogger(__name__)
 """
 class HomeView(ListView):
     model = Destination
-    paginate_by = 2 # Nombre d'éléments par page
+    #paginate_by = 4 # Afficher 4 destinations par page
     template_name = 'home.html'
-    context_object_name = 'Destination'#Avec ListView et model = Destination, Django crée automatiquement la variable object_list (et non Destination).
-    extra_context = {'pack_travels': pack_travel.objects.all()}
-    extra_context = {'hotels': Hotel.objects.all()}
-    extra_context = {'bookings': Booking.objects.all()}
-    extra_context = {'testimonials': Testimonial.objects.all()}
+    context_object_name = 'Destination'
+    
+
     
 """    def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
