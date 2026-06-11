@@ -1,0 +1,11 @@
+name: My Config
+version: 0.0.1
+schema: v1
+
+models:
+  - name: Codestral
+    provider: mistral
+    model: codestral-latest
+    apiKey: edTK9plrEZotg81ynCdhuPmlmSUAZiDb
+    roles:
+      - autocomplete

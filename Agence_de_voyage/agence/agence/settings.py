@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',
     'Agapp',
+    'weatherapp',
 ]
 
 MIDDLEWARE = [
@@ -138,4 +139,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # Default primary key field type
 # https://docs.djangoproject.com/en/6.0/ref/settings/#default-auto-field
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'    
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'   
+
+
+#SECURE_SSL_REDIRECT = True #Redirige tout le trafic HTTP vers HTTPS:
+SECURE_SESSION_COOKIE = True # Empêche l'envoi des cookies de session via une connexion non chiffrée.
+SECURE_CSRF_COOKIE = True # Empêche l'envoi des cookies CSRF via une connexion non chiffrée.

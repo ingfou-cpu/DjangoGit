@@ -1,0 +1,38 @@
+{% load i18n %}
+{% get_current_language as lang %}
+
+<!DOCTYPE html>
+<html lang="{{ lang }}">
+<head>
+    <meta charset="UTF-8">
+    <title>{% trans "Home Page" %}</title>
+</head>
+<body>
+{% for item in items %}
+    <p>{{ item.name }}</p>
+    <p>{{ item.description }}</p>
+{% empty %}
+    <p>Aucun item trouvé.</p>
+{% endfor %}
+    <h1>{{ greeting }}</h1>
+    <p>{{ plural_text }}</p>
+    <p>{% trans "Today is" %}: {{ localized_date }}</p>
+    
+    <p>{% blocktrans with user_count=42 %}This is a block translation with a variable: {{ user_count }} users.{% endblocktrans %}</p>
+    
+    <p>{% blocktrans %}This is a block translation without variables.{% endblocktrans %}</p>
+
+    <!-- Language switcher -->
+    <ul>
+        {% get_current_language as LANGUAGE_CODE %}
+        {% get_available_languages as LANGUAGES %}
+        {% for lang in LANGUAGES %}
+            <li>
+                <a href="{% url 'set_language' %}?language={{ lang.0 }}" {% if lang.0 == LANGUAGE_CODE %}class="selected"{% endif %}>
+                    {{ lang.1 }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

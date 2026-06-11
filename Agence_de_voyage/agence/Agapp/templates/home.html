@@ -102,8 +102,69 @@
             </div>
 
         </section>
-        <!-- Signup-->
+        <!-- Weather Section-->
+<section class="weather-section py-5 bg-light" id="weather">
+    <div class="container px-4 px-lg-5">
+        <h1 class="display-4 text-primary fw-bold text-center mb-4"><b><em>🌤️ Météo </em></b></h1>
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <form method="post" class="text-center mb-4">
+                    {% csrf_token %}
+                    <div class="input-group">
+                        <input type="text" name="city" class="form-control" placeholder="Entrez le nom d'une ville..." value="{{ request.POST.city }}">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-search"></i> Obtenir la météo
+                        </button>
+                    </div>
+                </form>
 
+                {% if weather_error %}
+                    <div class="alert alert-danger text-center" role="alert">
+                        <i class="fas fa-exclamation-triangle me-2"></i>{{ weather_error }}
+                    </div>
+                {% endif %}
+
+                {% if weather_data %}
+                <div class="card shadow-lg border-0 weather-card">
+                    <div class="card-body text-center p-4">
+                        <h3 class="card-title text-primary mb-3">
+                            <i class="fas fa-map-marker-alt"></i> {{ weather_data.city }}
+                        </h3>
+                        <div class="mb-3">
+                            <img src="https://openweathermap.org/img/wn/{{ weather_data.icon }}@2x.png" alt="Weather icon" class="weather-icon">
+                        </div>
+                        <h2 class="display-4 fw-bold text-dark mb-3">{{ weather_data.temperature }} °C</h2>
+                        <p class="lead text-muted mb-4">{{ weather_data.description }}</p>
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="p-3 bg-light rounded">
+                                    <i class="fas fa-tint text-primary fa-2x mb-2"></i>
+                                    <p class="mb-0 small text-muted">Humidité</p>
+                                    <p class="fw-bold mb-0">{{ weather_data.humidity }} %</p>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="p-3 bg-light rounded">
+                                    <i class="fas fa-compress-arrows-alt text-primary fa-2x mb-2"></i>
+                                    <p class="mb-0 small text-muted">Pression</p>
+                                    <p class="fw-bold mb-0">{{ weather_data.pressure }} hPa</p>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="p-3 bg-light rounded">
+                                    <i class="fas fa-cloud text-primary fa-2x mb-2"></i>
+                                    <p class="mb-0 small text-muted">Conditions</p>
+                                    <p class="fw-bold mb-0">{{ weather_data.description }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
         <!-- Contact-->
         <section class="contact-section bg-black">
             <div class="container px-4 px-lg-5">

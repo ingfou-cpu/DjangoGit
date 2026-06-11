@@ -11533,3 +11533,87 @@ form {
           display: none;
       }
   }
+}
+
+/* ==================== WEATHER SECTION ==================== */
+.weather-section {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 80px 0;
+}
+
+.weather-section h1 {
+  color: #fff !important;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.weather-card {
+  border-radius: 20px !important;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.weather-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15) !important;
+}
+
+.weather-card .card-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.weather-card .display-4 {
+  font-size: 3.5rem;
+  color: #333;
+}
+
+.weather-icon {
+  width: 100px;
+  height: 100px;
+}
+
+.weather-card .input-group {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.weather-card .input-group .form-control {
+  border-radius: 30px 0 0 30px;
+  padding: 12px 20px;
+  font-size: 1rem;
+  border: 2px solid #e0e0e0;
+  border-right: none;
+}
+
+.weather-card .input-group .form-control:focus {
+  border-color: #64a19d;
+  box-shadow: none;
+}
+
+.weather-card .input-group .btn {
+  border-radius: 0 30px 30px 0;
+  padding: 12px 25px;
+  font-weight: 600;
+  background: #64a19d;
+  border-color: #64a19d;
+}
+
+.weather-card .input-group .btn:hover {
+  background: #50817e;
+  border-color: #50817e;
+}
+
+.weather-card .alert {
+  border-radius: 15px;
+  font-weight: 500;
+}
+
+.weather-card .bg-light {
+  border-radius: 12px;
+  transition: background-color 0.3s ease;
+}
+
+.weather-card .bg-light:hover {
+  background-color: #e8f4f3 !important;
+}

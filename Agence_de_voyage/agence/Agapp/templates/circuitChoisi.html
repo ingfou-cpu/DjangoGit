@@ -113,10 +113,13 @@
         <p>Remplissez le formulaire ci-dessous pour votre réservation</p>
     </div>
     <!-- Message de confirmation -->
-    {% if confirmation_message %}
-    <div class="alert-confirmation {% if '✅' in confirmation_message %}alert-success{% else %}alert-error{% endif %} text-center" style="text-align: center;">
-        {{ confirmation_message }}
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert-confirmation {% if message.tags == 'success' %}alert-success{% else %}alert-error{% endif %} text-center" style="text-align: center;">
+        {{ message }} 
+        <p>Détails du circuit #{{ pk }}</p>
     </div>
+    {% endfor %}
     {% endif %}
     <!-- Destination Banner -->
     <div class="destination-banner">
@@ -145,7 +148,7 @@
         </div>
 
         <!-- Formulaire de réservation -->
-        <form id="reservationForm" method="POST" action="{% url 'circuitChoisi' pack_travels.id %}">
+        <form id="reservationForm" method="POST" action="{% url 'circuitChoisi' pack_travels.pk %}">
             {% csrf_token %}
             <input type="hidden" name="destination" value="{{ pack_travels.id }}">
 

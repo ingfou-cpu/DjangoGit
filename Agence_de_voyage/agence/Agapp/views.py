@@ -9,12 +9,16 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from django.contrib import messages
 import stripe
-from django.contrib.messages.views import SuccessMessageMixin
+from django.contrib.messages.views import SuccessMessageMixin #pour afficher le message de success
 import logging
 from django.views.generic.list import ListView 
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView
 from django.urls import reverse_lazy
+from weatherapp.models import SearchHistory
+from weatherapp.views import get_weather_for_city
+#from weatherapp.views import index as weather_index
+
 
 logger = logging.getLogger(__name__)
 
@@ -25,23 +29,48 @@ logger = logging.getLogger(__name__)
     #bookings = Booking.objects.all()
     pack_travels = pack_travel.objects.all()
     Destinations = Destination.objects.all()
-    return render(request, 'home.html', {'pack_travel': pack_travels, 'Destination': Destinations})
-"""
+    return render(request, 'home.html', {'pack_travel': pack_travels, 'Destination': Destinations})"""
+
 class HomeView(ListView):
     model = Destination
     #paginate_by = 4 # Afficher 4 destinations par page
     template_name = 'home.html'
     context_object_name = 'Destination'
     
-
-    
-"""    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['pack_travels'] = pack_travel.objects.all()
-        context['hotels'] = Hotel.objects.all()
-        context['bookings'] = Booking.objects.all()
-        context['testimonials'] = Testimonial.objects.all()
-        return context"""
+        context['SearchHistorys'] = SearchHistory.objects.order_by('-searched_at')[:5]
+        # Récupérer les données météo de la session si elles existent
+        context['weather_data'] = self.request.session.get('weather_data', None)
+        context['weather_error'] = self.request.session.get('weather_error', None)
+
+        # Ajouter les données météo pour chaque destination
+        destinations_weather = {}
+        for dest in Destination.objects.all():
+            if dest.city_name:
+                weather = get_weather_for_city(dest.city_name)
+                if weather:
+                    destinations_weather[dest.id] = weather
+        context['destinations_weather'] = destinations_weather
+
+        return context
+
+    def post(self, request, *args, **kwargs):
+        """Gérer la soumission du formulaire météo"""
+        city = request.POST.get('city', '').strip()
+        if city:
+            weather = get_weather_for_city(city)
+            if weather:
+                request.session['weather_data'] = weather
+                request.session['weather_error'] = None
+            else:
+                request.session['weather_data'] = None
+                request.session['weather_error'] = f"Impossible de trouver la météo pour '{city}'."
+        else:
+            request.session['weather_data'] = None
+            request.session['weather_error'] = "Veuillez entrer un nom de ville."
+        return redirect('home')
 
 class contactcreteview(SuccessMessageMixin, CreateView):
     model = Contact
@@ -79,8 +108,8 @@ class temoignageViewV(CreateView):
     testimonials = Testimonial.objects.all()
     destinations = Destination.objects.all()
     bookings = Booking.objects.all()
-    return render(request, 'temoignage.html',{'Testimonial': testimonials, 'Destination': destinations,'Booking': bookings})
-"""
+    return render(request, 'temoignage.html',{'Testimonial': testimonials, 'Destination': destinations,'Booking': bookings})"""
+
 class temoignageView(ListView):
     model = Testimonial
     paginate_by = 2 # Nombre d'éléments par page
@@ -212,7 +241,7 @@ def reservCroisiere(request, pack_travel_id):
     })
 
 def about(request):
-    return render(request, 'about.html', {})
+    return render(request, 'about.html', {  })
 
 
 def croisiere(request):
@@ -227,7 +256,35 @@ def circuit(request):
     return render(request, 'circuit_touris.html', {'Destination': Destinations, 'pack_travels': pack_travels})
 
 
-def circuitChoisi(request, pack_travel_id):
+class circuitChoisiView(DetailView):
+    model = pack_travel
+    template_name = 'circuitChoisi.html'
+    context_object_name = 'pack_travels'
+
+    def post(self, request, *args, **kwargs):
+        """Gérer la soumission du formulaire de réservation"""
+        self.object = self.get_object()
+        pack_travel_instance = self.object
+        
+        name = request.POST.get('customer_name')
+        email = request.POST.get('customer_email')
+        phone_number = request.POST.get('phone_number')
+
+        try:
+            reservation = reser_circuit(
+                customer_name=name,
+                customer_email=email,
+                phone_number=phone_number,
+                pack_travel=pack_travel_instance
+            )
+            reservation.save()
+            messages.success(request, "✅ Votre réservation a été confirmée avec succès !")
+        except Exception as e:
+            messages.error(request, f"❌ Erreur : {str(e)}")
+
+        return redirect('circuitChoisi', pk=pack_travel_instance.pk)
+
+"""def circuitChoisi(request, pack_travel_id):
     pack_travels = pack_travel.objects.get(id=pack_travel_id)
     confirmation_message = None
 
@@ -251,7 +308,7 @@ def circuitChoisi(request, pack_travel_id):
     return render(request, 'circuitChoisi.html', {
         'pack_travels': pack_travels,
         'confirmation_message': confirmation_message
-    })
+    })"""
 
 
 #============================= VUES PAIEMENT STRIPE =============================#

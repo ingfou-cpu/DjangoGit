@@ -1,10 +1,9 @@
 from django.urls import path, include
 from . import views
-from .views import contactcreteview, HomeView, temoignageView, temoignageViewV
+from .views import contactcreteview, HomeView, temoignageView, temoignageViewV,circuitChoisiView
 
 urlpatterns = [
     #path('', views.home, name='home'),
-
     path ('',HomeView.as_view(), name='home'),# variante HomeView de home 
 
     path('about/', views.about, name='about'), 
@@ -19,10 +18,12 @@ urlpatterns = [
     path('testimonial_form/', temoignageView.as_view(), name='testimonial_form'),# variante creteview de contact
     path('circuit/', views.circuit, name='circuit'),
     path('reselieuChoisi/<int:destination_id>/', views.reselieuChoisi, name='reselieuChoisi'),
-    path('circuitChoisi/<int:pack_travel_id>/', views.circuitChoisi, name='circuitChoisi'),
+
+    #path('circuitChoisi/<int:pack_travel_id>/', views.circuitChoisi, name='circuitChoisi'),
+    path('circuitChoisi/<int:pk>/', circuitChoisiView.as_view(), name='circuitChoisi'),
+
     path('reservCroisiere/<int:pack_travel_id>/', views.reservCroisiere, name='reservCroisiere'),
     
-
     # Paiement Stripe
     path('payment/', views.payment_home, name='payment_home'),
     path('payment/checkout/destination/<int:destination_id>/', views.create_checkout_destination, name='checkout_destination'),
