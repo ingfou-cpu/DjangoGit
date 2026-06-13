@@ -2,20 +2,19 @@
 <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
     <div class="container px-4 px-lg-5">
         <a class="navbar-brand" href="{% url 'home' %}">
-            <i class="fas fa-route me-2"></i>El bayadh travels
-        </a>
+            <i class="fas fa-route me-2"></i>El bayadh travels</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="navbar-nav ms-auto gap-lg-3">
-                <li class="nav-item"><a class="nav-link px-2" href="{% url 'home' %}"><i class="fas fa-home me-1"></i>Accueil</a></li>
-                <li class="nav-item"><a class="nav-link px-2" href="{% url 'home' %}#projects"><i class="fas fa-umbrella-beach me-1"></i>Destinations</a></li>
-                <li class="nav-item"><a class="nav-link px-2" href="{% url 'circuit' %}"><i class="fas fa-map me-1"></i>Circuits</a></li>
+            <ul class="navbar-nav me-auto gap-1 gap-lg-2">
+                <li class="nav-item"><a class="nav-link px-1 px-lg-2" href="{% url 'home' %}"><i class="fas fa-home me-1"></i>Accueil</a></li>
+                <li class="nav-item"><a class="nav-link px-1 px-lg-2" href="{% url 'home' %}#projects"><i class="fas fa-umbrella-beach me-1"></i>Destinations</a></li>
+                <li class="nav-item"><a class="nav-link px-1 px-lg-2" href="{% url 'circuit' %}"><i class="fas fa-map me-1"></i>Circuits</a></li>
                 
                 <!-- Menu Paiements -->
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle px-2" href="#" id="navbarDropdownPaiements" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle px-1 px-lg-2" href="#" id="navbarDropdownPaiements" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="fas fa-credit-card me-1"></i>Paiements</a>
                     <ul class="dropdown-menu dropdown-menu-end shadow border-0 py-2 mt-2" aria-labelledby="navbarDropdownPaiements" style="border-radius: 12px;">
                         <li><a class="dropdown-item py-2" href="{% url 'payment_home' %}"><i class="fas fa-wallet me-2 text-primary"></i>Réserver & Payer</a></li>
@@ -26,7 +25,7 @@
 
                 <!-- Menu Témoignages -->
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle px-2" href="#" id="navbarDropdownAvis" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle px-1 px-lg-2" href="#" id="navbarDropdownAvis" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="fas fa-star me-1"></i> Avis
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end shadow border-0 py-2 mt-2" aria-labelledby="navbarDropdownAvis" style="border-radius: 12px;">
@@ -35,9 +34,12 @@
                     </ul>
                 </li>
 
-                <li class="nav-item"><a class="nav-link px-2" href="{% url 'about' %}"><i class="fas fa-info-circle me-1"></i> À propos</a></li>
-                <li class="nav-item"><a class="nav-link px-2" href="{% url 'contact' %}"><i class="fas fa-envelope me-1"></i> Contact</a></li>
-                <li class="nav-item"><a class="nav-link px-2" href="{% url 'home' %}#weather"><i class="fas fa-cloud me-1"></i> weather</a></li>                
+                <li class="nav-item"><a class="nav-link px-1 px-lg-2" href="{% url 'about' %}"><i class="fas fa-info-circle me-1"></i> À propos</a></li>
+                <li class="nav-item"><a class="nav-link px-1 px-lg-2" href="{% url 'contact' %}"><i class="fas fa-envelope me-1"></i> Contact</a></li>
+                <li class="nav-item"><a class="nav-link px-1 px-lg-2" href="{% url 'home' %}#weather"><i class="fas fa-cloud me-1"></i> weather</a></li>
+            </ul>
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link px-2" href="{% url 'currency' %}"><i class="fas fa-money-bill-wave me-1"></i> Currency</a></li>
             </ul>
         </div>
     </div>

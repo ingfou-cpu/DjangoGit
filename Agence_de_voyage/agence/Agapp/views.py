@@ -1,4 +1,4 @@
-
+﻿
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Destination, Booking, Contact, Testimonial, pack_travel, Hotel, reser_circuit, PaymentRecord
 from .forms import ContactForm
@@ -8,7 +8,7 @@ from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from django.contrib import messages
-import stripe
+import stripe, requests
 from django.contrib.messages.views import SuccessMessageMixin #pour afficher le message de success
 import logging
 from django.views.generic.list import ListView 
@@ -309,8 +309,33 @@ class circuitChoisiView(DetailView):
         'pack_travels': pack_travels,
         'confirmation_message': confirmation_message
     })"""
+#============================= Corrency payment =============================#
+def convertir_devise(request):
+    # Remplacez par votre clé API (Ne la partagez jamais publiquement)
+    api_key =  settings.VOTRE_CLE_API_FIXER
+       
+    #url = f'http://fixer.io{api_key}&symbols=USD,EUR,DZD'
+    url = f'http://data.fixer.io/api/latest?access_key={api_key}&symbols=USD,EUR,DZD'
 
+    taux_de_change = {}
+    erreur = None
 
+    try:
+        response = requests.get(url)
+        data = response.json()
+
+        if response.status_code == 200 and data.get('success'):
+            taux_de_change = data.get('rates')
+        else:
+            erreur = f"Erreur API : {data.get('error', {}).get('info', 'Inconnue')}"
+    except Exception as e:
+        erreur = f"Connexion impossible : {str(e)}"
+
+    contexte = {
+        'taux': taux_de_change,
+        'erreur': erreur
+    }
+    return render(request, 'convertisseur.html', contexte)
 #============================= VUES PAIEMENT STRIPE =============================#
 
 def payment_home(request):
@@ -330,7 +355,7 @@ def create_checkout_destination(request, destination_id):
     if request.method != "POST":
         return redirect('payment_home')
 
-    stripe.api_key = settings.STRIPE_SECRET_KEY
+    stripe.api_key = settings.STRIPE_SECRET_KEY # 
     destination = get_object_or_404(Destination, id=destination_id)
 
     try:

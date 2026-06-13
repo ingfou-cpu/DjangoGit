@@ -10982,6 +10982,10 @@ body {
 #mainNav {
   min-height: 3.5rem;
   background-color: #fff;
+  position: relative;
+}
+#mainNav .container {
+  position: relative;
 }
 #mainNav .navbar-toggler {
   font-size: 80%;
@@ -10996,9 +11000,14 @@ body {
   color: #000;
   font-weight: 700;
   padding: 0.9rem 0;
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
 }
 #mainNav .navbar-nav .nav-item:hover {
-  color: fade(#fff, 80%);
+  color: rgba(255, 255, 255, 0.8);
   outline: none;
   background-color: transparent;
 }
@@ -11017,6 +11026,10 @@ body {
   #mainNav .navbar-brand {
     padding: 0.5rem 0;
     color: rgba(255, 255, 255, 0.5);
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
   }
   #mainNav .nav-link {
     transition: none;
@@ -11035,6 +11048,10 @@ body {
   }
   #mainNav.navbar-shrink .navbar-brand {
     color: #000;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
   }
   #mainNav.navbar-shrink .nav-link {
     color: #000;
@@ -11399,8 +11416,13 @@ form {
 /* Espacement entre les raccourcis de la navbar */
 @media (min-width: 992px) {
   #mainNav .navbar-nav .nav-item {
-    margin-left: 1rem;
-    margin-right: 1rem;
+    margin-left: 0.15rem;
+    margin-right: 0.15rem;
+  }
+  #mainNav .navbar-nav .nav-link {
+    padding-left: 0.35rem !important;
+    padding-right: 0.35rem !important;
+    font-size: 0.85rem;
   }
 }
 
@@ -11533,7 +11555,6 @@ form {
           display: none;
       }
   }
-}
 
 /* ==================== WEATHER SECTION ==================== */
 .weather-section {

@@ -32,4 +32,5 @@ urlpatterns = [
     path('payment/cancel/', views.payment_cancel, name='payment_cancel'),
     path('payment/webhook/', views.stripe_webhook, name='stripe_webhook'),
     path('history/', views.payment_history, name='payment_history'),
+    path('currency/', views.convertir_devise, name='currency'),
 ]

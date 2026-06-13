@@ -1,0 +1,248 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Convertisseur de Devises</title>
+    <link rel="stylesheet" href="{% static 'css/convertisseur.css' %}">
+</head>
+<body>
+    <div class="converter-container">
+        <div class="converter-header">
+            <h1>&#128176; Convertisseur de Devises</h1>
+            <p>Consultez les taux et convertissez entre diff&#233;rentes devises</p>
+        </div>
+
+        {% if erreur %}
+        <div class="error-container">
+            <div class="error-icon">&#9888;&#65039;</div>
+            <h2>Erreur de connexion</h2>
+            <p>{{ erreur }}</p>
+        </div>
+        {% else %}
+        <div class="converter-card" id="converter-card"
+             data-rates='{% for devise, valeur in taux.items %}{{ devise }}:{{ valeur }}{% if not forloop.last %},{% endif %}{% endfor %}'>
+            <div class="converter-card-inner">
+
+                <!-- S&#233;lection de la devise de base -->
+                <div class="base-currency-selector">
+                    <label for="base-currency">&#127760; Devise de base :</label>
+                    <select id="base-currency" onchange="changeBaseCurrency(this.value)">
+                        {% for devise, valeur in taux.items %}
+                        <option value="{{ devise }}" {% if devise == 'EUR' %}selected{% endif %}>
+                            {{ devise }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Grille des taux de change -->
+                <div class="rates-grid" id="rates-grid">
+                    {% for devise, valeur in taux.items %}
+                    <div class="rate-card {% if devise == 'EUR' %}base-currency{% endif %}" id="card-{{ devise }}" onclick="selectTargetCurrency('{{ devise }}')">
+                        {% if devise == 'EUR' %}
+                        <span class="badge">Base</span>
+                        {% endif %}
+                        {% if devise == 'USD' %}
+                        <div class="currency-icon">&#127480;&#127472;</div>
+                        <div class="currency-code">USD</div>
+                        <div class="currency-name">Dollar Am&#233;ricain</div>
+                        <div class="rate-value usd" id="rate-USD">{{ valeur }}</div>
+                        {% elif devise == 'EUR' %}
+                        <div class="currency-icon">&#127464;&#127475;</div>
+                        <div class="currency-code">EUR</div>
+                        <div class="currency-name">Euro</div>
+                        <div class="rate-value eur" id="rate-EUR">{{ valeur }}</div>
+                        {% elif devise == 'DZD' %}
+                        <div class="currency-icon">&#127465;&#127474;</div>
+                        <div class="currency-code">DZD</div>
+                        <div class="currency-name">Dinar Alg&#233;rien</div>
+                        <div class="rate-value dzd" id="rate-DZD">{{ valeur }}</div>
+                        {% else %}
+                        <div class="currency-icon">&#128176;</div>
+                        <div class="currency-code">{{ devise }}</div>
+                        <div class="currency-name">Devise</div>
+                        <div class="rate-value" id="rate-{{ devise }}">{{ valeur }}</div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Fen&#234;tre de conversion -->
+                <div class="conversion-window">
+                    <h3>&#128279; Convertir un montant</h3>
+                    <div class="conversion-form">
+                        <div class="conversion-group">
+                            <label for="amount">Montant</label>
+                            <input type="number" id="amount" placeholder="100" value="100" min="0" step="0.01" oninput="convertCurrency()">
+                        </div>
+
+                        <div class="conversion-group">
+                            <label for="from-currency">De</label>
+                            <select id="from-currency" onchange="convertCurrency()">
+                                {% for devise, valeur in taux.items %}
+                                <option value="{{ devise }}" {% if devise == 'EUR' %}selected{% endif %}>{{ devise }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <button class="swap-btn" onclick="swapCurrencies()" title="Inverser les devises">&#8644;</button>
+
+                        <div class="conversion-group">
+                            <label for="to-currency">Vers</label>
+                            <select id="to-currency" onchange="convertCurrency()">
+                                {% for devise, valeur in taux.items %}
+                                <option value="{{ devise }}" {% if devise == 'USD' %}selected{% endif %}>{{ devise }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- R&#233;sultat -->
+                    <div class="conversion-result" id="conversion-result">
+                        <div class="result-amount" id="result-amount">--</div>
+                        <div class="result-detail" id="result-detail">--</div>
+                        <div class="result-rate" id="result-rate">--</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <p class="update-info">
+            &#128203; Les taux sont mis &#224; jour via l'API Fixer.io
+        </p>
+        {% endif %}
+    </div>
+
+    <script>
+        // R&#233;cup&#233;rer les taux depuis l'attribut data-rates
+        var rates = {};
+        var cardElement = document.getElementById('converter-card');
+        if (cardElement) {
+            var ratesData = cardElement.getAttribute('data-rates');
+            if (ratesData) {
+                var pairs = ratesData.split(',');
+                for (var i = 0; i < pairs.length; i++) {
+                    var pair = pairs[i].split(':');
+                    if (pair.length === 2) {
+                        rates[pair[0].trim()] = parseFloat(pair[1].trim());
+                    }
+                }
+            }
+        }
+
+        function changeBaseCurrency(selectedBase) {
+            var baseRate = rates[selectedBase];
+            if (!baseRate) return;
+
+            var currencies = Object.keys(rates);
+            for (var i = 0; i < currencies.length; i++) {
+                var currency = currencies[i];
+                var rate = rates[currency];
+                var newRate = rate / baseRate;
+                var formattedRate = newRate < 1 ? newRate.toFixed(6) : newRate.toFixed(4);
+
+                var rateElement = document.getElementById('rate-' + currency);
+                if (rateElement) {
+                    rateElement.textContent = formattedRate;
+                }
+
+                var cardEl = document.getElementById('card-' + currency);
+                if (cardEl) {
+                    cardEl.classList.remove('base-currency', 'active');
+                    var oldBadge = cardEl.querySelector('.badge');
+                    if (oldBadge) oldBadge.remove();
+
+                    if (currency === selectedBase) {
+                        cardEl.classList.add('base-currency');
+                        var badge = document.createElement('span');
+                        badge.className = 'badge';
+                        badge.textContent = 'Base';
+                        cardEl.appendChild(badge);
+                    }
+                }
+            }
+
+            convertCurrency();
+        }
+
+        function selectTargetCurrency(currency) {
+            document.getElementById('to-currency').value = currency;
+
+            var cards = document.querySelectorAll('.rate-card');
+            for (var i = 0; i < cards.length; i++) {
+                cards[i].classList.remove('active');
+            }
+
+            var card = document.getElementById('card-' + currency);
+            if (card && !card.classList.contains('base-currency')) {
+                card.classList.add('active');
+            }
+
+            convertCurrency();
+        }
+
+        function swapCurrencies() {
+            var fromSelect = document.getElementById('from-currency');
+            var toSelect = document.getElementById('to-currency');
+
+            var temp = fromSelect.value;
+            fromSelect.value = toSelect.value;
+            toSelect.value = temp;
+
+            convertCurrency();
+        }
+
+        function convertCurrency() {
+            var amountEl = document.getElementById('amount');
+            var amount = parseFloat(amountEl.value);
+            var fromCurrency = document.getElementById('from-currency').value;
+            var toCurrency = document.getElementById('to-currency').value;
+
+            if (isNaN(amount) || amount < 0) {
+                document.getElementById('conversion-result').classList.remove('visible');
+                return;
+            }
+
+            if (fromCurrency === toCurrency) {
+                var resultElement = document.getElementById('conversion-result');
+                var formattedAmount = formatNumber(amount);
+                document.getElementById('result-amount').textContent = formattedAmount + ' ' + toCurrency;
+                document.getElementById('result-detail').textContent = 'M&#234;me devise - aucune conversion n&#233;cessaire';
+                document.getElementById('result-rate').textContent = '1 ' + fromCurrency + ' = 1 ' + toCurrency;
+                resultElement.classList.add('visible');
+                return;
+            }
+
+            var fromRate = rates[fromCurrency];
+            var toRate = rates[toCurrency];
+            var convertedAmount = amount * (toRate / fromRate);
+            var exchangeRate = toRate / fromRate;
+
+            var formattedResult = formatNumber(convertedAmount);
+            var formattedRate = exchangeRate < 1 ? exchangeRate.toFixed(6) : exchangeRate.toFixed(4);
+
+            document.getElementById('result-amount').textContent = formattedResult + ' ' + toCurrency;
+            document.getElementById('result-detail').textContent =
+                formatNumber(amount) + ' ' + fromCurrency + ' = ' + formattedResult + ' ' + toCurrency;
+            document.getElementById('result-rate').textContent =
+                '1 ' + fromCurrency + ' = ' + formattedRate + ' ' + toCurrency;
+
+            document.getElementById('conversion-result').classList.add('visible');
+        }
+
+        function formatNumber(num) {
+            if (num >= 1000) {
+                return num.toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            }
+            return num.toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 4 });
+        }
+    </script>
+</body>
+</html>
+{% endblock %}
